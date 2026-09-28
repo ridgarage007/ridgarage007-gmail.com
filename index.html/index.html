@@ -3,148 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RID GARAGE - Periyodik Bakım & Servis Defteri</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- QRCode.js Kütüphanesi -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- FontAwesome İkonları -->
+    <title>RID GARAGE - Periyodik Servis Takip ve Sorgulama</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: #f8fafc; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #58a6ff;
+            font-size: 22px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: #8b949e;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            flex: 1;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px 15px;
+            color: #fff;
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #58a6ff;
+        }
+        button {
+            background: #238636;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #2ea043;
+        }
+        .result-card {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-item {
+            margin-bottom: 12px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #21262d;
+            padding-bottom: 8px;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .label {
+            color: #8b949e;
+            font-weight: 500;
+        }
+        .value {
+            color: #f0f6fc;
+            font-weight: 600;
+            text-align: right;
+        }
+        .error-msg {
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.4);
+            color: #f85149;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-top: 20px;
+            display: none;
+        }
+        .qr-section {
+            margin-top: 30px;
+            border-top: 1px solid #30363d;
+            padding-top: 20px;
+        }
+        .qr-section h3 {
+            font-size: 12px;
+            color: #8b949e;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .qr-box {
+            background: #fff;
+            padding: 10px;
+            display: inline-block;
+            border-radius: 8px;
+        }
+        .qr-box img {
+            display: block;
+            width: 130px;
+            height: 130px;
+        }
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
+        .whatsapp { background: #25d366; }
+        .instagram { background: #e4405f; }
+        .phone { background: #1f6feb; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-between p-4 sm:p-6">
+<body>
 
-    <!-- Üst Başlık -->
-    <header class="w-full max-w-md text-center py-4">
-        <h1 class="text-3xl font-extrabold tracking-wider text-cyan-400">RID GARAGE</h1>
-        <p class="text-xs font-medium text-slate-400 tracking-widest uppercase mt-1">Otomatik Şanzıman ve Özel Servis</p>
-    </header>
+    <div class="container">
+        <h1>RID GARAGE</h1>
+        <div class="subtitle">Otomatik Şanzıman ve Özel Servis</div>
 
-    <!-- Ana İçerik -->
-    <main class="w-full max-w-md space-y-6 my-auto">
-        
-        <!-- Sorgulama Kartı -->
-        <div class="glass-card p-6 rounded-3xl shadow-2xl">
-            <label class="block text-sm font-semibold text-slate-300 mb-2 text-center">Araç Plakanızı Giriniz</label>
-            <div class="flex items-center bg-slate-900/80 border border-slate-700 rounded-2xl overflow-hidden focus-within:border-cyan-400 transition-all p-1">
-                <input type="text" id="plakaInput" placeholder="Örn: 07RİD07" 
-                    class="w-full bg-transparent px-4 py-3 text-white font-bold text-lg uppercase tracking-wider focus:outline-none placeholder:text-slate-600 placeholder:normal-case placeholder:font-normal">
-                <button onclick="sorgula()" id="sorguBtn" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-5 py-3 rounded-xl font-bold transition-all flex items-center justify-center cursor-pointer">
-                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
-                </button>
+        <div class="search-box">
+            <input type="text" id="plateInput" placeholder="Örn: 07RID07">
+            <button onclick="searchPlate()"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+
+        <div id="errorMsg" class="error-msg">
+            <i class="fa-solid fa-circle-exclamation"></i> Bu plakaya ait servis kaydı bulunamadı.
+        </div>
+
+        <div id="resultCard" class="result-card">
+            <div class="result-item"><span class="label">Plaka</span><span class="value" id="resPlate">-</span></div>
+            <div class="result-item"><span class="label">Müşteri Adı</span><span class="value" id="resName">-</span></div>
+            <div class="result-item"><span class="label">Marka & Model</span><span class="value" id="resCar">-</span></div>
+            <div class="result-item"><span class="label">Giriş Tarihi</span><span class="value" id="resDate">-</span></div>
+            <div class="result-item"><span class="label">Kilometre</span><span class="value" id="resKm">-</span></div>
+            <div class="result-item"><span class="label">Arıza / İşlem</span><span class="value" id="resIssue">-</span></div>
+        </div>
+
+        <div class="qr-section">
+            <h3>Dükkan Servis QR Kodunuz</h3>
+            <div class="qr-box">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://ridgarage007.github.io/ridgarage007-gmail.com/" alt="QR Kod">
             </div>
         </div>
 
-        <!-- Sonuç Alanı (Başlangıçta Gizli) -->
-        <div id="sonucAlani" class="glass-card p-6 rounded-3xl shadow-2xl hidden space-y-4">
-            <h3 class="text-lg font-bold text-cyan-400 border-b border-slate-700 pb-2 flex items-center justify-between">
-                <span>Araç Servis Bilgileri</span>
-                <i class="fa-solid fa-car text-sm"></i>
-            </h3>
-            <div id="sonucIcerik" class="space-y-3 text-sm text-slate-300">
-                <!-- Veriler buraya dolacak -->
-            </div>
+        <div class="social-buttons">
+            <a href="https://wa.me/905467230631" target="_blank" class="social-btn whatsapp" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://instagram.com" target="_blank" class="social-btn instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="tel:05467230631" class="social-btn phone" title="Ara"><i class="fa-solid fa-phone"></i></a>
         </div>
+    </div>
 
-        <!-- Hata Mesajı -->
-        <div id="hataAlani" class="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-2xl text-center text-sm hidden">
-            <i class="fa-solid fa-circle-exclamation mr-2"></i> <span id="hataMesajText"></span>
-        </div>
-
-        <!-- QR Kod Üretici Alanı (Dükkan İçin Hazır) -->
-        <div class="glass-card p-6 rounded-3xl shadow-2xl text-center space-y-3">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Dükkan Servis QR Kodunuz</h4>
-            <div id="qrcode" class="inline-block p-3 bg-white rounded-2xl shadow-inner"></div>
-            <p class="text-xs text-slate-500">Müşterilerinizin okutması için sabittir.</p>
-        </div>
-
-        <!-- İletişim Butonları -->
-        <div class="flex justify-center gap-4 pt-2">
-            <!-- WhatsApp -->
-            <a href="https://wa.me/905378495172" target="_blank" class="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all text-xl shadow-lg" title="WhatsApp ile Ulaşın">
-                <i class="fa-brands fa-whatsapp"></i>
-            </a>
-            <!-- Telefon Arama -->
-            <a href="tel:+905378495172" class="w-14 h-14 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 transition-all text-xl shadow-lg" title="Hemen Ara">
-                <i class="fa-solid fa-phone"></i>
-            </a>
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/ridgarage7?stkn=MXhtdnY1MmxoaXFvZQ==" target="_blank" class="w-14 h-14 rounded-2xl bg-pink-500/20 border border-pink-500/40 flex items-center justify-center text-pink-400 hover:bg-pink-500 hover:text-white transition-all text-xl shadow-lg" title="Instagram'da Takip Et">
-                <i class="fa-brands fa-instagram"></i>
-            </a>
-        </div>
-
-    </main>
-
-    <!-- Alt Bilgi -->
-    <footer class="w-full max-w-md text-center py-4 text-xs text-slate-500 font-medium">
-        RID GARAGE © 2026 - Tüm Hakları Saklıdır.
-    </footer>
-
-    <!-- JavaScript Bağlantı ve Mantığı -->
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwyRQ8IW-M1IaaIpzT2N2tSz49uNGRtFAOGlZszfL0RXOzWSo_tDgqml3r6jhWpxwpO/exec";
-
-        window.onload = function() {
-            document.getElementById("qrcode").innerHTML = "";
-            new QRCode(document.getElementById("qrcode"), {
-                text: "https://ridgarage007.github.io/ridgarage007-gmail.com/",
-                width: 160,
-                height: 160,
-                colorDark : "#0f172a",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
-        };
-
-        async function sorgula() {
-            let plaka = document.getElementById("plakaInput").value.trim();
-            let sonucAlani = document.getElementById("sonucAlani");
-            let hataAlani = document.getElementById("hataAlani");
-            let btn = document.getElementById("sorguBtn");
-
-            if (!plaka) {
-                gosterHata("Lütfen geçerli bir plaka giriniz!");
-                return;
+        // Senin Google Tablondaki verileri buraya entegre ettik kanka:
+        const serviceDatabase = [
+            {
+                plate: "07RID07",
+                name: "Recep Demir",
+                car: "2026 Ferarari",
+                date: "05.08.2027",
+                km: "87",
+                issue: "Şanzıman Keçesi"
+            },
+            {
+                plate: "07HTY07",
+                name: "İlknur Hanım",
+                car: "Bisiklet",
+                date: "05.02.2026",
+                km: "12",
+                issue: "Zincir"
             }
+        ];
 
-            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin text-lg"></i>';
-            sonucAlani.classList.add("hidden");
-            hataAlani.classList.add("hidden");
+        function searchPlate() {
+            const inputVal = document.getElementById('plateInput').value.trim().toUpperCase();
+            const resultCard = document.getElementById('resultCard');
+            const errorMsg = document.getElementById('errorMsg');
 
-            try {
-                let response = await fetch(`${SCRIPT_URL}?plaka=${encodeURIComponent(plaka)}`);
-                let data = await response.json();
+            if (!inputVal) return;
 
-                if (data.success) {
-                    let html = "";
-                    for (let key in data.record) {
-                        html += `<div class="flex justify-between border-b border-slate-800/60 pb-2"><span class="font-medium text-slate-400">${key}:</span> <span class="font-semibold text-white">${data.record[key]}</span></div>`;
-                    }
-                    document.getElementById("sonucIcerik").innerHTML = html;
-                    sonucAlani.classList.remove("hidden");
-                } else {
-                    gosterHata(data.message || "Bu plakaya ait kayıt bulunamadı.");
-                }
-            } catch (err) {
-                gosterHata("Bağlantı hatası oluştu, lütfen tekrar deneyin.");
-            } finally {
-                btn.innerHTML = '<i class="fa-solid fa-magnifying-glass text-lg"></i>';
+            const foundRecord = serviceDatabase.find(item => item.plate === inputVal);
+
+            if (foundRecord) {
+                document.getElementById('resPlate').innerText = foundRecord.plate;
+                document.getElementById('resName').innerText = foundRecord.name;
+                document.getElementById('resCar').innerText = foundRecord.car;
+                document.getElementById('resDate').innerText = foundRecord.date;
+                document.getElementById('resKm').innerText = foundRecord.km;
+                document.getElementById('resIssue').innerText = foundRecord.issue;
+
+                resultCard.style.display = 'block';
+                errorMsg.style.display = 'none';
+            } else {
+                resultCard.style.display = 'none';
+                errorMsg.style.display = 'block';
             }
         }
 
-        function gosterHata(mesaj) {
-            document.getElementById("hataMesajText").innerText = mesaj;
-            document.getElementById("hataAlani").classList.remove("hidden");
-        }
-
-        document.getElementById("plakaInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                sorgula();
+        // Enter tuşuna basınca da sorgulasın
+        document.getElementById('plateInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchPlate();
             }
         });
     </script>
