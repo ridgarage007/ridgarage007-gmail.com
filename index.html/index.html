@@ -1,4 +1,4 @@
-[00:40, 29.09.2026] Hüseyin Mengene: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -14,6 +14,22 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans',…
 [00:50, 29.09.2026] Hüseyin Mengene: <!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RID GARAGE - Periyodik Bakım & Servis Defteri</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- QRCode.js Kütüphanesi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- FontAwesome İkonları -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans',…
+[01:08, 29.09.2026] Hüseyin Mengene: [https://ridgarage007.github.io](https://ridgarage007.github.io)
+[01:17, 29.09.2026] Hüseyin Mengene: <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -104,11 +120,11 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwyRQ8IW-M1IaaIpzT2N2tSz49uNGRtFAOGlZszfL0RXOzWSo_tDgqml3r6jhWpxwpO/exec";
 
-        // Sayfa açıldığında otomatik QR kodunu oluştur
+        // Doğru ve tam canlı bağlantı adresi ile otomatik QR kod üretimi
         window.onload = function() {
             document.getElementById("qrcode").innerHTML = "";
             new QRCode(document.getElementById("qrcode"), {
-                text: window.location.href,
+                text: "https://ridgarage007.github.io/ridgarage007-gmail.com/",
                 width: 160,
                 height: 160,
                 colorDark : "#0f172a",
