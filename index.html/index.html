@@ -12,37 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans',…
-[00:50, 29.09.2026] Hüseyin Mengene: <!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RID GARAGE - Periyodik Bakım & Servis Defteri</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- QRCode.js Kütüphanesi -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- FontAwesome İkonları -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans',…
-[01:08, 29.09.2026] Hüseyin Mengene: [https://ridgarage007.github.io](https://ridgarage007.github.io)
-[01:17, 29.09.2026] Hüseyin Mengene: <!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RID GARAGE - Periyodik Bakım & Servis Defteri</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- QRCode.js Kütüphanesi -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- FontAwesome İkonları -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: #f8fafc; }
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
@@ -120,7 +89,6 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwyRQ8IW-M1IaaIpzT2N2tSz49uNGRtFAOGlZszfL0RXOzWSo_tDgqml3r6jhWpxwpO/exec";
 
-        // Doğru ve tam canlı bağlantı adresi ile otomatik QR kod üretimi
         window.onload = function() {
             document.getElementById("qrcode").innerHTML = "";
             new QRCode(document.getElementById("qrcode"), {
@@ -144,19 +112,18 @@
                 return;
             }
 
-            // Yükleniyor efekti
             btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin text-lg"></i>';
             sonucAlani.classList.add("hidden");
             hataAlani.classList.add("hidden");
 
             try {
-                let response = await fetch(${SCRIPT_URL}?plaka=${encodeURIComponent(plaka)});
+                let response = await fetch(`${SCRIPT_URL}?plaka=${encodeURIComponent(plaka)}`);
                 let data = await response.json();
 
                 if (data.success) {
                     let html = "";
                     for (let key in data.record) {
-                        html += <div class="flex justify-between border-b border-slate-800/60 pb-2"><span class="font-medium text-slate-400">${key}:</span> <span class="font-semibold text-white">${data.record[key]}</span></div>;
+                        html += `<div class="flex justify-between border-b border-slate-800/60 pb-2"><span class="font-medium text-slate-400">${key}:</span> <span class="font-semibold text-white">${data.record[key]}</span></div>`;
                     }
                     document.getElementById("sonucIcerik").innerHTML = html;
                     sonucAlani.classList.remove("hidden");
@@ -175,7 +142,6 @@
             document.getElementById("hataAlani").classList.remove("hidden");
         }
 
-        // Enter tuşu ile sorgulama
         document.getElementById("plakaInput").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 sorgula();
