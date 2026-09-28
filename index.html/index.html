@@ -3,271 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RID GARAGE - Periyodik Servis Takip ve Sorgulama</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>RID GARAGE - Periyodik Bakım ve Servis Takip</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-        body {
-            background-color: #0d1117;
-            color: #c9d1d9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 16px;
-            padding: 30px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
-        }
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            color: #58a6ff;
-            font-size: 22px;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
-        .subtitle {
-            font-size: 13px;
-            color: #8b949e;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .search-box {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        input {
-            flex: 1;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 12px 15px;
-            color: #fff;
-            font-size: 16px;
-            text-transform: uppercase;
-            font-weight: 600;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        input:focus {
-            border-color: #58a6ff;
-        }
-        button {
-            background: #238636;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 0 20px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #2ea043;
-        }
-        .result-card {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: left;
-            margin-top: 20px;
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .result-item {
-            margin-bottom: 12px;
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #21262d;
-            padding-bottom: 8px;
-        }
-        .result-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        .label {
-            color: #8b949e;
-            font-weight: 500;
-        }
-        .value {
-            color: #f0f6fc;
-            font-weight: 600;
-            text-align: right;
-        }
-        .error-msg {
-            background: rgba(248, 81, 73, 0.1);
-            border: 1px solid rgba(248, 81, 73, 0.4);
-            color: #f85149;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-top: 20px;
-            display: none;
-        }
-        .qr-section {
-            margin-top: 30px;
-            border-top: 1px solid #30363d;
-            padding-top: 20px;
-        }
-        .qr-section h3 {
-            font-size: 12px;
-            color: #8b949e;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .qr-box {
-            background: #fff;
-            padding: 10px;
-            display: inline-block;
-            border-radius: 8px;
-        }
-        .qr-box img {
-            display: block;
-            width: 130px;
-            height: 130px;
-        }
-        .social-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        .social-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 18px;
-            text-decoration: none;
-            transition: transform 0.2s;
-        }
-        .social-btn:hover {
-            transform: scale(1.1);
-        }
-        .whatsapp { background: #25d366; }
-        .instagram { background: #e4405f; }
-        .phone { background: #1f6feb; }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col justify-between">
 
-    <div class="container">
-        <h1>RID GARAGE</h1>
-        <div class="subtitle">Otomatik Şanzıman ve Özel Servis</div>
-
-        <div class="search-box">
-            <input type="text" id="plateInput" placeholder="Örn: 07RID07">
-            <button onclick="searchPlate()"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <!-- Üst Bilgi / Header -->
+    <header class="bg-gray-900 border-b border-gray-800 py-4 px-6 shadow-md">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-red-600 text-white font-black text-xl px-3 py-1.5 rounded-lg tracking-wider shadow-lg shadow-red-600/30">
+                    RID GARAGE
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white">Araç Servis ve Bakım Bilgi Sistemi</h1>
+                    <p class="text-xs text-gray-400">Antalya / Konyaaltı</p>
+                </div>
+            </div>
+            <div class="w-full sm:w-auto">
+                <div class="relative">
+                    <input type="text" id="plateInput" placeholder="Plaka Girin (Örn: 07RID07)" 
+                           class="w-full sm:w-64 bg-gray-950 border border-gray-700 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 uppercase font-bold tracking-wider focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition shadow-inner">
+                </div>
+            </div>
         </div>
+    </header>
 
-        <div id="errorMsg" class="error-msg">
-            <i class="fa-solid fa-circle-exclamation"></i> Bu plakaya ait servis kaydı bulunamadı.
-        </div>
-
-        <div id="resultCard" class="result-card">
-            <div class="result-item"><span class="label">Plaka</span><span class="value" id="resPlate">-</span></div>
-            <div class="result-item"><span class="label">Müşteri Adı</span><span class="value" id="resName">-</span></div>
-            <div class="result-item"><span class="label">Marka & Model</span><span class="value" id="resCar">-</span></div>
-            <div class="result-item"><span class="label">Giriş Tarihi</span><span class="value" id="resDate">-</span></div>
-            <div class="result-item"><span class="label">Kilometre</span><span class="value" id="resKm">-</span></div>
-            <div class="result-item"><span class="label">Arıza / İşlem</span><span class="value" id="resIssue">-</span></div>
-        </div>
-
-        <div class="qr-section">
-            <h3>Dükkan Servis QR Kodunuz</h3>
-            <div class="qr-box">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://ridgarage007.github.io/ridgarage007-gmail.com/" alt="QR Kod">
+    <!-- Ana İçerik -->
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full">
+        <!-- Bilgilendirme / Yönlendirme -->
+        <div id="welcomeMessage" class="bg-gradient-to-r from-gray-900 to-gray-900/60 border border-gray-800/80 rounded-2xl p-6 sm:p-8 text-center shadow-xl mb-6">
+            <div class="inline-flex p-3 bg-red-600/10 text-red-500 rounded-full mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <h2 class="text-xl font-bold text-white mb-2">Aracınızın Durumunu Sorgulayın</h2>
+            <p class="text-gray-400 text-sm max-w-md mx-auto mb-6">Lütfen yukarıdaki arama alanına aracınızın plakasını yazarak periyodik bakım detaylarını ve yapılan işlemleri görüntüleyin.</p>
+            <div class="flex flex-wrap justify-center gap-2">
+                <span class="text-xs text-gray-500 self-center mr-1">Örnek Plakalar:</span>
+                <button onclick="searchSample('07RID07')" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1 rounded-lg text-xs font-semibold border border-gray-700 transition">07RID07</button>
+                <button onclick="searchSample('07HTY07')" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1 rounded-lg text-xs font-semibold border border-gray-700 transition">07HTY07</button>
             </div>
         </div>
 
-        <div class="social-buttons">
-            <a href="https://wa.me/905467230631" target="_blank" class="social-btn whatsapp" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-            <a href="https://instagram.com" target="_blank" class="social-btn instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="tel:05467230631" class="social-btn phone" title="Ara"><i class="fa-solid fa-phone"></i></a>
+        <!-- Sonuç Kartı (Başlangıçta Gizli) -->
+        <div id="resultCard" class="hidden bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300">
+            <div class="bg-gradient-to-r from-red-900/40 to-gray-900 px-6 py-4 border-b border-gray-800 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="inline-block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Servis Kaydı Bulundu</span>
+                </div>
+                <span id="resPlaka" class="bg-red-600 text-white font-mono font-bold text-lg px-3 py-1 rounded-lg tracking-widest shadow"></span>
+            </div>
+
+            <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="bg-gray-950/60 p-4 rounded-xl border border-gray-800/60">
+                        <span class="text-xs font-medium text-gray-400 uppercase block mb-1">Müşteri Adı Soyadı</span>
+                        <span id="resAdSoyad" class="text-lg font-bold text-white"></span>
+                    </div>
+                    <div class="bg-gray-950/60 p-4 rounded-xl border border-gray-800/60">
+                        <span class="text-xs font-medium text-gray-400 uppercase block mb-1">Servise Giriş Tarihi</span>
+                        <span id="resGirisTarihi" class="text-base font-semibold text-gray-200"></span>
+                    </div>
+                    <div class="bg-gray-950/60 p-4 rounded-xl border border-gray-800/60">
+                        <span class="text-xs font-medium text-gray-400 uppercase block mb-1">Servis Giriş Kilometresi (KM)</span>
+                        <span id="resKm" class="text-base font-semibold text-gray-200 font-mono"></span>
+                    </div>
+                </div>
+
+                <div class="space-y-4 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="bg-gray-950/60 p-4 rounded-xl border border-gray-800/60">
+                            <span class="text-xs font-medium text-gray-400 uppercase block mb-1">Müşterinin Belirttiği Arıza</span>
+                            <span id="resAriza" class="text-base font-medium text-red-400"></span>
+                        </div>
+                        <div class="bg-gray-950/60 p-4 rounded-xl border border-gray-800/60">
+                            <span class="text-xs font-medium text-gray-400 uppercase block mb-1">Yapılan İşler ve Malzemeler</span>
+                            <div id="resMalzemeler" class="text-sm font-normal text-gray-200 whitespace-pre-line leading-relaxed max-h-40 overflow-y-auto pr-1"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-950/60 p-4 rounded-xl border border-gray-800/60 grid grid-cols-2 gap-4">
+                        <div>
+                            <span class="text-xs font-medium text-gray-400 uppercase block mb-1">Araç Teslim Tarihi</span>
+                            <span id="resTeslimTarihi" class="text-sm font-semibold text-green-400"></span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-medium text-gray-400 uppercase block mb-1">Gelecek Bakım KM</span>
+                            <span id="resGelecekKm" class="text-sm font-semibold text-yellow-400 font-mono"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
+        <!-- Bulunamadı Uyarısı -->
+        <div id="notFoundCard" class="hidden bg-red-950/20 border border-red-900/50 rounded-2xl p-8 text-center">
+            <h3 class="text-lg font-bold text-red-400 mb-1">Kayıt Bulunamadı</h3>
+            <p class="text-gray-400 text-sm">Girdiğiniz plakaya ait aktif bir servis kaydı sistemde bulunamadı. Lütfen plakayı kontrol edip tekrar deneyin.</p>
+        </div>
+
+        <!-- Dükkan Servis QR Kod ve İletişim Alanı -->
+        <div class="mt-12 bg-gray-900 border border-gray-800 rounded-2xl p-6 text-center shadow-lg">
+            <h3 class="text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">DÜKKAN SERVİS QR KODUNUZ</h3>
+            <div class="inline-block bg-white p-3 rounded-xl shadow-md mb-4">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=https://ridgarage007.github.io/ridgarage007-gmail.com/" alt="RID GARAGE QR Kod" class="w-36 h-36 mx-auto" />
+            </div>
+            <p class="text-xs text-gray-400 max-w-sm mx-auto mb-4">Bu karekodu telefonunuza kaydedebilir veya kartvizit, etiket baskısı için matbaaya doğrudan verebilirsiniz.</p>
+            
+            <div class="flex justify-center items-center gap-4 pt-3 border-t border-gray-800">
+                <!-- WhatsApp İletişim -->
+                <a href="https://wa.me/905378495172" target="_blank" class="bg-green-600 hover:bg-green-500 text-white p-3 rounded-full transition shadow-lg shadow-green-600/20" title="WhatsApp İletişim">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.124-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                </a>
+                <!-- Instagram İletişim -->
+                <a href="https://www.instagram.com/ridgarage7" target="_blank" class="bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-600 hover:opacity-90 text-white p-3 rounded-full transition shadow-lg" title="Instagram Sayfası">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <!-- Telefon ile Arama -->
+                <a href="tel:+905378495172" class="bg-red-600 hover:bg-red-500 text-white p-3 rounded-full transition shadow-lg shadow-red-600/20" title="Telefon ile Ara">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Alt Bilgi / Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-4 px-6 text-center text-xs text-gray-500">
+        &copy; 2026 RID GARAGE - Tüm Hakları Saklıdır.
+    </footer>
+
+    <!-- Google Sheets Entegrasyon Scripti -->
     <script>
-        // Senin Google Tablondaki verileri buraya entegre ettik kanka:
-        const serviceDatabase = [
-            {
-                plate: "07RID07",
-                name: "Recep Demir",
-                car: "2026 Ferarari",
-                date: "05.08.2027",
-                km: "87",
-                issue: "Şanzıman Keçesi"
-            },
-            {
-                plate: "07HTY07",
-                name: "İlknur Hanım",
-                car: "Bisiklet",
-                date: "05.02.2026",
-                km: "12",
-                issue: "Zincir"
-            }
-        ];
+        const sheetID = '1DMK_UfunzilY1KOSTFLDW3DQYjHyBGzmb2XwftzCnk';
+        const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
 
-        function searchPlate() {
-            const inputVal = document.getElementById('plateInput').value.trim().toUpperCase();
-            const resultCard = document.getElementById('resultCard');
-            const errorMsg = document.getElementById('errorMsg');
+        let servisVerileri = [];
 
-            if (!inputVal) return;
+        async function verileriCek() {
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                const json = JSON.parse(text.substring(47, text.length - 2));
+                const rows = json.table.rows;
 
-            const foundRecord = serviceDatabase.find(item => item.plate === inputVal);
-
-            if (foundRecord) {
-                document.getElementById('resPlate').innerText = foundRecord.plate;
-                document.getElementById('resName').innerText = foundRecord.name;
-                document.getElementById('resCar').innerText = foundRecord.car;
-                document.getElementById('resDate').innerText = foundRecord.date;
-                document.getElementById('resKm').innerText = foundRecord.km;
-                document.getElementById('resIssue').innerText = foundRecord.issue;
-
-                resultCard.style.display = 'block';
-                errorMsg.style.display = 'none';
-            } else {
-                resultCard.style.display = 'none';
-                errorMsg.style.display = 'block';
+                servisVerileri = rows.map(row => {
+                    return {
+                        plaka: row.c[4] ? row.c[4].v.toString().trim().toUpperCase() : '',
+                        girisTarihi: row.c[5] ? row.c[5].v : '',
+                        km: row.c[6] ? row.c[6].v : '',
+                        ariza: row.c[7] ? row.c[7].v : '',
+                        malzemeler: row.c[8] ? row.c[8].v : '',
+                        teslimTarihi: row.c[9] ? row.c[9].v : '',
+                        gelecekKm: row.c[10] ? row.c[10].v : '',
+                        adSoyad: row.c[3] ? row.c[3].v : ''
+                    };
+                });
+            } catch (error) {
+                console.error("Veri çekilemedi:", error);
             }
         }
 
-        // Enter tuşuna basınca da sorgulasın
-        document.getElementById('plateInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                searchPlate();
+        verileriCek();
+
+        const plateInput = document.getElementById('plateInput');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const resultCard = document.getElementById('resultCard');
+        const notFoundCard = document.getElementById('notFoundCard');
+
+        plateInput.addEventListener('input', function(e) {
+            const arananPlaka = e.target.value.trim().toUpperCase();
+
+            if (arananPlaka.length < 3) {
+                welcomeMessage.classList.remove('hidden');
+                resultCard.classList.add('hidden');
+                notFoundCard.classList.add('hidden');
+                return;
+            }
+
+            const bulunan = servisVerileri.find(item => item.plaka.replace(/\s+/g, '') === arananPlaka.replace(/\s+/g, ''));
+
+            if (bulunan) {
+                welcomeMessage.classList.add('hidden');
+                notFoundCard.classList.add('hidden');
+                resultCard.classList.remove('hidden');
+
+                document.getElementById('resPlaka').innerText = bulunan.plaka;
+                document.getElementById('resAdSoyad').innerText = bulunan.adSoyad || 'Belirtilmemiş';
+                document.getElementById('resGirisTarihi').innerText = bulunan.girisTarihi || '-';
+                document.getElementById('resKm').innerText = bulunan.km ? bulunan.km + ' KM' : '-';
+                document.getElementById('resAriza').innerText = bulunan.ariza || '-';
+                document.getElementById('resMalzemeler').innerText = bulunan.malzemeler || '-';
+                document.getElementById('resTeslimTarihi').innerText = bulunan.teslimTarihi || '-';
+                document.getElementById('resGelecekKm').innerText = bulunan.gelecekKm ? bulunan.gelecekKm + ' KM' : '-';
+            } else {
+                welcomeMessage.classList.add('hidden');
+                resultCard.classList.add('hidden');
+                notFoundCard.classList.remove('hidden');
             }
         });
+
+        function searchSample(plaka) {
+            plateInput.value = plaka;
+            plateInput.dispatchEvent(new Event('input'));
+        }
     </script>
 </body>
 </html>
