@@ -1,0 +1,170 @@
+[00:40, 29.09.2026] Hüseyin Mengene: <!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RID GARAGE - Periyodik Bakım & Servis Defteri</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- QRCode.js Kütüphanesi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- FontAwesome İkonları -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans',…
+[00:50, 29.09.2026] Hüseyin Mengene: <!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RID GARAGE - Periyodik Bakım & Servis Defteri</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- QRCode.js Kütüphanesi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- FontAwesome İkonları -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 sm:p-6">
+
+    <!-- Üst Başlık -->
+    <header class="w-full max-w-md text-center py-4">
+        <h1 class="text-3xl font-extrabold tracking-wider text-cyan-400">RID GARAGE</h1>
+        <p class="text-xs font-medium text-slate-400 tracking-widest uppercase mt-1">Otomatik Şanzıman ve Özel Servis</p>
+    </header>
+
+    <!-- Ana İçerik -->
+    <main class="w-full max-w-md space-y-6 my-auto">
+        
+        <!-- Sorgulama Kartı -->
+        <div class="glass-card p-6 rounded-3xl shadow-2xl">
+            <label class="block text-sm font-semibold text-slate-300 mb-2 text-center">Araç Plakanızı Giriniz</label>
+            <div class="flex items-center bg-slate-900/80 border border-slate-700 rounded-2xl overflow-hidden focus-within:border-cyan-400 transition-all p-1">
+                <input type="text" id="plakaInput" placeholder="Örn: 07RİD07" 
+                    class="w-full bg-transparent px-4 py-3 text-white font-bold text-lg uppercase tracking-wider focus:outline-none placeholder:text-slate-600 placeholder:normal-case placeholder:font-normal">
+                <button onclick="sorgula()" id="sorguBtn" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-5 py-3 rounded-xl font-bold transition-all flex items-center justify-center cursor-pointer">
+                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sonuç Alanı (Başlangıçta Gizli) -->
+        <div id="sonucAlani" class="glass-card p-6 rounded-3xl shadow-2xl hidden space-y-4">
+            <h3 class="text-lg font-bold text-cyan-400 border-b border-slate-700 pb-2 flex items-center justify-between">
+                <span>Araç Servis Bilgileri</span>
+                <i class="fa-solid fa-car text-sm"></i>
+            </h3>
+            <div id="sonucIcerik" class="space-y-3 text-sm text-slate-300">
+                <!-- Veriler buraya dolacak -->
+            </div>
+        </div>
+
+        <!-- Hata Mesajı -->
+        <div id="hataAlani" class="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-2xl text-center text-sm hidden">
+            <i class="fa-solid fa-circle-exclamation mr-2"></i> <span id="hataMesajText"></span>
+        </div>
+
+        <!-- QR Kod Üretici Alanı (Dükkan İçin Hazır) -->
+        <div class="glass-card p-6 rounded-3xl shadow-2xl text-center space-y-3">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Dükkan Servis QR Kodunuz</h4>
+            <div id="qrcode" class="inline-block p-3 bg-white rounded-2xl shadow-inner"></div>
+            <p class="text-xs text-slate-500">Müşterilerinizin okutması için sabittir.</p>
+        </div>
+
+        <!-- İletişim Butonları -->
+        <div class="flex justify-center gap-4 pt-2">
+            <!-- WhatsApp -->
+            <a href="https://wa.me/905378495172" target="_blank" class="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all text-xl shadow-lg" title="WhatsApp ile Ulaşın">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <!-- Telefon Arama -->
+            <a href="tel:+905378495172" class="w-14 h-14 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 transition-all text-xl shadow-lg" title="Hemen Ara">
+                <i class="fa-solid fa-phone"></i>
+            </a>
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/ridgarage7?stkn=MXhtdnY1MmxoaXFvZQ==" target="_blank" class="w-14 h-14 rounded-2xl bg-pink-500/20 border border-pink-500/40 flex items-center justify-center text-pink-400 hover:bg-pink-500 hover:text-white transition-all text-xl shadow-lg" title="Instagram'da Takip Et">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Alt Bilgi -->
+    <footer class="w-full max-w-md text-center py-4 text-xs text-slate-500 font-medium">
+        RID GARAGE © 2026 - Tüm Hakları Saklıdır.
+    </footer>
+
+    <!-- JavaScript Bağlantı ve Mantığı -->
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwyRQ8IW-M1IaaIpzT2N2tSz49uNGRtFAOGlZszfL0RXOzWSo_tDgqml3r6jhWpxwpO/exec";
+
+        // Sayfa açıldığında otomatik QR kodunu oluştur
+        window.onload = function() {
+            document.getElementById("qrcode").innerHTML = "";
+            new QRCode(document.getElementById("qrcode"), {
+                text: window.location.href,
+                width: 160,
+                height: 160,
+                colorDark : "#0f172a",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        };
+
+        async function sorgula() {
+            let plaka = document.getElementById("plakaInput").value.trim();
+            let sonucAlani = document.getElementById("sonucAlani");
+            let hataAlani = document.getElementById("hataAlani");
+            let btn = document.getElementById("sorguBtn");
+
+            if (!plaka) {
+                gosterHata("Lütfen geçerli bir plaka giriniz!");
+                return;
+            }
+
+            // Yükleniyor efekti
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin text-lg"></i>';
+            sonucAlani.classList.add("hidden");
+            hataAlani.classList.add("hidden");
+
+            try {
+                let response = await fetch(${SCRIPT_URL}?plaka=${encodeURIComponent(plaka)});
+                let data = await response.json();
+
+                if (data.success) {
+                    let html = "";
+                    for (let key in data.record) {
+                        html += <div class="flex justify-between border-b border-slate-800/60 pb-2"><span class="font-medium text-slate-400">${key}:</span> <span class="font-semibold text-white">${data.record[key]}</span></div>;
+                    }
+                    document.getElementById("sonucIcerik").innerHTML = html;
+                    sonucAlani.classList.remove("hidden");
+                } else {
+                    gosterHata(data.message || "Bu plakaya ait kayıt bulunamadı.");
+                }
+            } catch (err) {
+                gosterHata("Bağlantı hatası oluştu, lütfen tekrar deneyin.");
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-magnifying-glass text-lg"></i>';
+            }
+        }
+
+        function gosterHata(mesaj) {
+            document.getElementById("hataMesajText").innerText = mesaj;
+            document.getElementById("hataAlani").classList.remove("hidden");
+        }
+
+        // Enter tuşu ile sorgulama
+        document.getElementById("plakaInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                sorgula();
+            }
+        });
+    </script>
+</body>
+</html>
