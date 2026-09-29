@@ -138,15 +138,14 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwPKkVWXWALUCp4KBuBeRhngEpefEL8SNyX_zEAZHgevvd9VXyuRwKTqRBmjecdOLqj/exec';
+        // En güncel ve taptaze Google Apps Script URL'si
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxU-keoMRBD-njWfXqA0C-RMbYKmHctzvzw_q--autxOIqHLlVmVvxLqF9Pa6ihqu8/exec';
         
         let cachedData = null;
 
-        // Tarih formatını tertemiz düzeltip saatleri uçuran fonksiyon
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '';
             let str = tarihStr.toString();
-            // Eğer JavaScript tarih objesi olarak geldiyse veya içinde GMT geçiyorsa formatla
             if (str.includes('GMT') || str.includes('00:00:00')) {
                 let d = new Date(str);
                 if (!isNaN(d.getTime())) {
@@ -156,7 +155,6 @@
                     return gun + '.' + ay + '.' + yil;
                 }
             }
-            // Düz metin olarak geldiyse ve içinde saat varsa ilk boşluğa kadarki kısmı al
             return str.split(' 00:00:00')[0].split(' GMT')[0];
         }
 
@@ -199,7 +197,6 @@
                     document.getElementById('resTelefon').innerText = bulunan.telefon;
                     document.getElementById('resMarka').innerText = bulunan.marka;
                     
-                    // Saatler tamamen temizlenmiş tertemiz tarihler basılıyor
                     document.getElementById('resGirisTarihi').innerText = temizleTarih(bulunan.girisTarihi);
                     document.getElementById('resKM').innerText = bulunan.km;
                     document.getElementById('resAriza').innerText = bulunan.ariza;
