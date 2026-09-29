@@ -136,6 +136,14 @@
                         </div>
                         <span id="resToplam" class="font-extrabold text-emerald-400 text-xl font-mono tracking-wide">0.00 ₺</span>
                     </div>
+
+                    <!-- YENİ: WhatsApp Bakım Hatırlatma Butonu -->
+                    <div class="sm:col-span-2 pt-2">
+                        <button onclick="whatsappHatirlat()" class="w-full bg-[#25D366] hover:bg-[#20ba5a] text-white py-3.5 px-4 rounded-2xl font-bold transition shadow-lg shadow-green-600/20 flex items-center justify-center space-x-2 text-base">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <span>Müşteriye WhatsApp Bakım Hatırlatması Gönder</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -162,7 +170,8 @@
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycby2LXFvhLBeCDXxzkxVWkFDTrO4UbBoCW7c6gBxbGsGMMvirOpvyjmvvg9HQ7h0DEKU/exec';
-        let isSearching = false; // Üst üste tıklamaları engellemek için güvenlik kilidi
+        let isSearching = false;
+        let aktifKayit = null; // Seçilen aracın verilerini hafızada tutmak için
 
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '-';
@@ -202,8 +211,35 @@
             }
         }
 
+        // WhatsApp Hatırlatıcı Mesaj Gönderme Fonksiyonu
+        function whatsappHatirlat() {
+            if (!aktifKayit) {
+                alert('Önce bir araç sorgulamalısınız!');
+                return;
+            }
+
+            let tel = aktifKayit.telefon.toString().replace(/[^\d]/g, '');
+            if (!tel) {
+                alert('Bu araca ait telefon numarası bulunamadı!');
+                return;
+            }
+
+            // Eğer numara 0 ile başlıyorsa veya 10 haneliyse uluslararası formata çevir
+            if (tel.length === 10) tel = '90' + tel;
+            if (tel.startsWith('0')) tel = '9' + tel;
+
+            let adSoyad = aktifKayit.adSoyad || 'Değerli Müşterimiz';
+            let plaka = aktifKayit.plaka;
+            let gelecekTarih = temizleTarih(aktifKayit.gelecekBakim);
+
+            let mesaj = `Sayın *${adSoyad}*,\n\n*RID GARAGE VAG Uzman Servis* olarak bizi tercih ettiğiniz için teşekkür ederiz. *${plaka}* plakalı aracınızın periyodik bakım dönemi yaklaşmıştır (${gelecekTarih}).\n\nBakım randevusu oluşturmak ve detaylı bilgi almak için bizimle iletişime geçebilirsiniz.\n\nİyi günler dileriz.\n📍 *RID GARAGE - Antalya*`;
+
+            let url = `https://wa.me/${tel}?text=` + encodeURIComponent(mesaj);
+            window.open(url, '_blank');
+        }
+
         async function searchPlate() {
-            if (isSearching) return; // Zaten arama yapılıyorsa ikinci tıklamayı yoksay
+            if (isSearching) return;
 
             const inputVal = document.getElementById('plateInput').value.trim().toUpperCase().replace(/\s+/g, '');
             const resultCard = document.getElementById('resultContainer');
@@ -221,7 +257,6 @@
             resultCard.classList.add('hidden');
             notFoundCard.classList.add('hidden');
             
-            // Butonu kilitle ve yükleniyor animasyonu ver
             btn.disabled = true;
             btn.classList.add('opacity-75', 'cursor-not-allowed');
             icon.className = 'fa-solid fa-spinner fa-spin';
@@ -233,24 +268,24 @@
                 const servisVeritabani = await response.json();
 
                 const eşleşenler = servisVeritabani.filter(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
-                const bulunan = eşleşenler.length > 0 ? eşleşenler[eşleşenler.length - 1] : null;
+                aktifKayit = eşleşenler.length > 0 ? eşleşenler[eşleşenler.length - 1] : null;
 
-                if (bulunan) {
-                    document.getElementById('resPlaka').innerText = bulunan.plaka;
-                    document.getElementById('resAdSoyad').innerText = bulunan.adSoyad || '-';
-                    document.getElementById('resTelefon').innerText = bulunan.telefon || '-';
-                    document.getElementById('resMarka').innerText = bulunan.marka || '-';
-                    document.getElementById('resGirisTarihi').innerText = bulunan.girisTarihi || '-';
-                    document.getElementById('resKM').innerText = bulunan.km || '-';
-                    document.getElementById('resTeslim').innerText = temizleTarih(bulunan.teslim);
-                    document.getElementById('resGelecekTarih').innerText = temizleTarih(bulunan.gelecekBakim);
+                if (aktifKayit) {
+                    document.getElementById('resPlaka').innerText = aktifKayit.plaka;
+                    document.getElementById('resAdSoyad').innerText = aktifKayit.adSoyad || '-';
+                    document.getElementById('resTelefon').innerText = aktifKayit.telefon || '-';
+                    document.getElementById('resMarka').innerText = aktifKayit.marka || '-';
+                    document.getElementById('resGirisTarihi').innerText = aktifKayit.girisTarihi || '-';
+                    document.getElementById('resKM').innerText = aktifKayit.km || '-';
+                    document.getElementById('resTeslim').innerText = temizleTarih(aktifKayit.teslim);
+                    document.getElementById('resGelecekTarih').innerText = temizleTarih(aktifKayit.gelecekBakim);
                     document.getElementById('resGelecekKM').innerText = '-';
-                    document.getElementById('resAriza').innerText = bulunan.ariza || '-';
-                    document.getElementById('resIsler').innerText = bulunan.isler || '-';
-                    document.getElementById('resVeresiye').innerText = bulunan.veresiye || '-';
-                    document.getElementById('resNakit').innerText = bulunan.nakit || '-';
-                    document.getElementById('resKredi').innerText = bulunan.krediKarti || '-';
-                    document.getElementById('resToplam').innerText = hesaplaToplam(bulunan.toplam);
+                    document.getElementById('resAriza').innerText = aktifKayit.ariza || '-';
+                    document.getElementById('resIsler').innerText = aktifKayit.isler || '-';
+                    document.getElementById('resVeresiye').innerText = aktifKayit.veresiye || '-';
+                    document.getElementById('resNakit').innerText = aktifKayit.nakit || '-';
+                    document.getElementById('resKredi').innerText = aktifKayit.krediKarti || '-';
+                    document.getElementById('resToplam').innerText = hesaplaToplam(aktifKayit.toplam);
                     
                     resultCard.classList.remove('hidden');
                 } else {
@@ -261,7 +296,6 @@
                 alert('Veriler çekilirken bir hata oluştu! İnternet bağlantınızı kontrol edin.');
                 notFoundCard.classList.remove('hidden');
             } finally {
-                // Kilidi kaldır ve butonu eski haline getir
                 isSearching = false;
                 btn.disabled = false;
                 btn.classList.remove('opacity-75', 'cursor-not-allowed');
