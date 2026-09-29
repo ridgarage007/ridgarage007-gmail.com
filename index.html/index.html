@@ -231,7 +231,7 @@
             let plaka = aktifKayit.plaka;
             let gelecekTarih = temizleTarih(aktifKayit.gelecekBakim);
 
-            let mesaj = `Sayın *${adSoyad}*,\n\n*RID GARAGE VAG Uzman Servis ve Otomatik Şanzıman Bakım Merkezi* olarak bizi tercih ettiğiniz için teşekkür ederiz. *${plaka}* plakalı aracınızın periyodik bakım ve kontrol dönemi yaklaşmıştır (${gelecekTarih}).\n\nŞanzıman ve motor bakım randevusu oluşturmak için bizimle iletişime geçebilirsiniz.\n\nİyi günler dileriz.\n📍 *RID GARAGE - Antalya*`;
+            let mesaj = `Sayın *${adSoyad}*,\n\n*RID GARAGE VAG Uzman Servis ve Otomatik Şanzıman Bakım Merkezi* olarak bizi tercih ettiğiniz için teşekkür ederiz. *${plaka}* plakalı aracınızın periyodik bakım ve *otomatik şanzıman* kontrol dönemi yaklaşmıştır (${gelecekTarih}).\n\nBakım randevusu oluşturmak için bizimle iletişime geçebilirsiniz.\n\nİyi günler dileriz.\n📍 *RID GARAGE - Antalya*`;
 
             let url = `https://wa.me/${tel}?text=` + encodeURIComponent(mesaj);
             window.open(url, '_blank');
@@ -273,7 +273,7 @@
                     document.getElementById('resPlaka').innerText = aktifKayit.plaka;
                     document.getElementById('resAdSoyad').innerText = aktifKayit.adSoyad || '-';
                     document.getElementById('resTelefon').innerText = aktifKayit.telefon || '-';
-                    document.getElementById('resMarka').innerText = aktifKeyit?.marka || aktifKayit.marka || '-';
+                    document.getElementById('resMarka').innerText = aktifKayit.marka || '-';
                     document.getElementById('resGirisTarihi').innerText = aktifKayit.girisTarihi || '-';
                     document.getElementById('resKM').innerText = aktifKayit.km || '-';
                     document.getElementById('resTeslim').innerText = temizleTarih(aktifKayit.teslim);
