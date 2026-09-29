@@ -25,17 +25,14 @@
                     <p class="text-xs text-sky-300/80">Volkswagen • Audi • Seat • Skoda Uzman Servis & Otomatik Şanzıman</p>
                 </div>
             </div>
-            <!-- Orijinal Renkli Amblemli Butonlar (WhatsApp, Arama/Telefon, Instagram) -->
+            <!-- Orijinal Renkli Amblemli Butonlar -->
             <div class="flex items-center space-x-3">
-                <!-- WhatsApp -->
                 <a href="https://wa.me/905378495172" target="_blank" title="WhatsApp" class="bg-[#25D366] hover:bg-[#20ba5a] text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-lg">
                     <i class="fa-brands fa-whatsapp"></i>
                 </a>
-                <!-- Arama / Telefon -->
                 <a href="tel:+905378495172" title="Ara" class="bg-[#34C759] hover:bg-[#2eb04f] text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-base">
                     <i class="fa-solid fa-phone-volume"></i>
                 </a>
-                <!-- Instagram -->
                 <a href="https://instagram.com/ridgarage7" target="_blank" title="Instagram" class="bg-gradient-to-tr from-[#feda75] via-[#d62976] to-[#962fbf] hover:opacity-90 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-base">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
@@ -54,11 +51,11 @@
             <div class="flex gap-2">
                 <div class="relative flex-grow">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-sky-400"><i class="fa-solid fa-car"></i></span>
-                    <input type="text" id="plateInput" placeholder="07RID07" class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3.5 pl-11 pr-4 text-white uppercase placeholder-slate-600 focus:outline-none focus:border-sky-500 font-mono tracking-widest text-lg shadow-inner">
+                    <input type="text" id="plateInput" placeholder="07RID07" onkeypress="handleKeyPress(event)" class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3.5 pl-11 pr-4 text-white uppercase placeholder-slate-600 focus:outline-none focus:border-sky-500 font-mono tracking-widest text-lg shadow-inner">
                 </div>
                 <button onclick="searchPlate()" id="searchBtn" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-3.5 rounded-2xl font-semibold transition shadow-lg shadow-sky-600/20 flex items-center space-x-2">
-                    <i class="fa-solid fa-search"></i>
-                    <span>Sorgula</span>
+                    <i class="fa-solid fa-search" id="searchIcon"></i>
+                    <span id="btnText">Sorgula</span>
                 </button>
             </div>
         </div>
@@ -165,6 +162,7 @@
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycby2LXFvhLBeCDXxzkxVWkFDTrO4UbBoCW7c6gBxbGsGMMvirOpvyjmvvg9HQ7h0DEKU/exec';
+        let isSearching = false; // Üst üste tıklamaları engellemek için güvenlik kilidi
 
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '-';
@@ -181,20 +179,53 @@
             return str.split(' 00:00:00')[0].split(' GMT')[0];
         }
 
+        function hesaplaToplam(metin) {
+            if (!metin) return '0.00 ₺';
+            let str = metin.toString().trim();
+            let sayilar = str.match(/\d+[\d\.]*/g);
+            if (sayilar && sayilar.length > 0) {
+                let toplam = 0;
+                sayilar.forEach(s => {
+                    let temizSayi = parseFloat(s.replace(/\./g, '')) || 0;
+                    toplam += temizSayi;
+                });
+                if (toplam > 0) {
+                    return toplam.toLocaleString('tr-TR') + ' ₺';
+                }
+            }
+            return str.includes('₺') ? str : str + ' ₺';
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                searchPlate();
+            }
+        }
+
         async function searchPlate() {
+            if (isSearching) return; // Zaten arama yapılıyorsa ikinci tıklamayı yoksay
+
             const inputVal = document.getElementById('plateInput').value.trim().toUpperCase().replace(/\s+/g, '');
             const resultCard = document.getElementById('resultContainer');
             const notFoundCard = document.getElementById('notFoundCard');
             const btn = document.getElementById('searchBtn');
+            const icon = document.getElementById('searchIcon');
+            const btnText = document.getElementById('btnText');
 
             if (!inputVal) {
                 alert('Lütfen geçerli bir plaka girin!');
                 return;
             }
 
+            isSearching = true;
             resultCard.classList.add('hidden');
             notFoundCard.classList.add('hidden');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Aranıyor...</span>';
+            
+            // Butonu kilitle ve yükleniyor animasyonu ver
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+            icon.className = 'fa-solid fa-spinner fa-spin';
+            btnText.innerText = 'Aranıyor...';
 
             try {
                 const response = await fetch(scriptURL);
@@ -219,17 +250,7 @@
                     document.getElementById('resVeresiye').innerText = bulunan.veresiye || '-';
                     document.getElementById('resNakit').innerText = bulunan.nakit || '-';
                     document.getElementById('resKredi').innerText = bulunan.krediKarti || '-';
-                    
-                    // N sütunundaki toplam tutar
-                    let toplamDeger = bulunan.toplam || '-';
-                    if (toplamDeger !== '-' && toplamDeger !== '') {
-                        if (!toplamDeger.toString().includes('₺')) {
-                            toplamDeger = Number(toplamDeger).toLocaleString('tr-TR') + ' ₺';
-                        }
-                    } else {
-                        toplamDeger = '0.00 ₺';
-                    }
-                    document.getElementById('resToplam').innerText = toplamDeger;
+                    document.getElementById('resToplam').innerText = hesaplaToplam(bulunan.toplam);
                     
                     resultCard.classList.remove('hidden');
                 } else {
@@ -240,7 +261,12 @@
                 alert('Veriler çekilirken bir hata oluştu! İnternet bağlantınızı kontrol edin.');
                 notFoundCard.classList.remove('hidden');
             } finally {
-                btn.innerHTML = '<i class="fa-solid fa-search"></i><span>Sorgula</span>';
+                // Kilidi kaldır ve butonu eski haline getir
+                isSearching = false;
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                icon.className = 'fa-solid fa-search';
+                btnText.innerText = 'Sorgula';
             }
         }
     </script>
