@@ -142,11 +142,37 @@
     </main>
 
     <footer class="bg-slate-950 border-t border-slate-900 py-4 px-6 text-center text-xs text-slate-500 mt-8">
-        <p>©️ 2026 RID GARAGE - VAG Grubu Uzman Servis & Otomatik Şanzıman. Tüm Hakları Saklıdır.</p>
+        <p>© 2026 RID GARAGE - VAG Grubu Uzman Servis & Otomatik Şanzıman. Tüm Hakları Saklıdır.</p>
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxAqB9Cr4PC5MAr3ETw4hGQj1iOgxxi9H0fCEQZDFwbLuuBdvyWYvL4LYPCpFgmu0QI/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzpBvwO3fruCSNpJ3rIWA0JrJ4JaEnx1W3mh-ZfYl9eiSHKZb4Pfs7b7UwQoEI5l5-h/exec';
+
+        function temizleTarih(tarihStr) {
+            if (!tarihStr) return '';
+            let str = tarihStr.toString().trim();
+            
+            let aylar = {Jan:1, Feb:2, Mar:3, Apr:4, May:5, Jun:6, Jul:7, Aug:8, Sep:9, Oct:10, Nov:11, Dec:12};
+            let match = str.match(/([a-zA-Z]{3})\s+([a-zA-Z]{3})\s+(\d{2})\s+(\d{4})/);
+            
+            if (match) {
+                let ayStr = match[2];
+                let gunStr = match[3];
+                let yilStr = match[4];
+                let ayNum = aylar[ayStr] || 1;
+                return String(gunStr).padStart(2, '0') + '.' + String(ayNum).padStart(2, '0') + '.' + yilStr;
+            }
+
+            let d = new Date(str);
+            if (!isNaN(d.getTime()) && (str.includes('GMT') || str.includes('00:00:00'))) {
+                let gun = String(d.getDate()).padStart(2, '0');
+                let ay = String(d.getMonth() + 1).padStart(2, '0');
+                let yil = d.getFullYear();
+                return gun + '.' + ay + '.' + yil;
+            }
+            
+            return str.split(' 00:00:00')[0].split(' GMT')[0];
+        }
 
         async function searchPlate() {
             const inputVal = document.getElementById('plateInput').value.trim().toUpperCase().replace(/\s+/g, '');
@@ -177,16 +203,16 @@
                     document.getElementById('resTelefon').innerText = bulunan.telefon;
                     document.getElementById('resMarka').innerText = bulunan.marka;
                     
-                    document.getElementById('resGirisTarihi').innerText = bulunan.girisTarihi;
-                    document.getElementById('resKM').innerText = bulunan.km;
+                    document.getElementById('resGirisTarihi').innerText = temizleTarih(bulunan.girisTarihi);
+                    document.getElementById('resKM').innerText = temizleTarih(bulunan.km);
                     document.getElementById('resAriza').innerText = bulunan.ariza;
                     document.getElementById('resMalzemeler').innerText = bulunan.malzemeler;
                     
                     document.getElementById('resParcalar').innerText = bulunan.parcalar;
                     document.getElementById('resFiyatlar').innerText = bulunan.fiyatlar;
                     
-                    document.getElementById('resTeslimTarihi').innerText = bulunan.teslimTarihi;
-                    document.getElementById('resGelecekKM').innerText = bulunan.gelecekKM;
+                    document.getElementById('resTeslimTarihi').innerText = temizleTarih(bulunan.teslimTarihi);
+                    document.getElementById('resGelecekKM').innerText = temizleTarih(bulunan.gelecekKM);
                     
                     document.getElementById('resVeresiye').innerText = bulunan.veresiye;
                     document.getElementById('resNakit').innerText = bulunan.nakit;
