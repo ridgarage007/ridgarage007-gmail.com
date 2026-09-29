@@ -25,10 +25,20 @@
                     <p class="text-xs text-sky-300/80">Volkswagen • Audi • Seat • Skoda Uzman Servis & Otomatik Şanzıman</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-2.5">
-                <a href="https://wa.me/905378495172" target="_blank" title="WhatsApp" class="bg-sky-500 hover:bg-sky-400 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-lg"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="tel:+905378495172" title="Telefon" class="bg-blue-600 hover:bg-blue-500 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-base"><i class="fa-solid fa-phone"></i></a>
-                <a href="https://instagram.com/ridgarage7" target="_blank" title="Instagram" class="bg-indigo-600 hover:bg-indigo-500 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-base"><i class="fa-brands fa-instagram"></i></a>
+            <!-- Orijinal Renkli Amblemli Butonlar (WhatsApp, Arama/Telefon, Instagram) -->
+            <div class="flex items-center space-x-3">
+                <!-- WhatsApp -->
+                <a href="https://wa.me/905378495172" target="_blank" title="WhatsApp" class="bg-[#25D366] hover:bg-[#20ba5a] text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-lg">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+                <!-- Arama / Telefon -->
+                <a href="tel:+905378495172" title="Ara" class="bg-[#34C759] hover:bg-[#2eb04f] text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-base">
+                    <i class="fa-solid fa-phone-volume"></i>
+                </a>
+                <!-- Instagram -->
+                <a href="https://instagram.com/ridgarage7" target="_blank" title="Instagram" class="bg-gradient-to-tr from-[#feda75] via-[#d62976] to-[#962fbf] hover:opacity-90 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-base">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
             </div>
         </div>
     </header>
@@ -88,9 +98,17 @@
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-circle-check mr-1 text-emerald-400"></i> Araç Teslim Tarihi</span>
                         <span id="resTeslim" class="font-semibold text-emerald-400"></span>
                     </div>
-                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-road mr-1 text-sky-400"></i> Gelecek Dönem Bakım</span>
-                        <span id="resGelecek" class="font-semibold text-sky-400"></span>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-sky-500/30 bg-sky-950/20 sm:col-span-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-calendar-check mr-1 text-sky-400"></i> Gelecek Dönem Bakım (Tarih)</span>
+                                <span id="resGelecekTarih" class="font-bold text-sky-300 text-base"></span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-gauge-high mr-1 text-amber-400"></i> Gelecek Dönem Bakım (KM)</span>
+                                <span id="resGelecekKM" class="font-bold text-amber-400 text-base"></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-triangle-exclamation mr-1 text-red-400"></i> Müşteri Belirttiği Arıza</span>
@@ -139,11 +157,9 @@
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbyT4VaAjpnCQlFO5Kg7Q4uwsoJbRMB-pLq-DDaNpVLlKUBPSCxtIPRQtEIMhzc9CKFu/exec';
 
-        // Uzun GMT tarih formatlarını temizleyip GG.AA.YYYY formatına çeviren akıllı fonksiyon
         function temizleTarih(tarihStr) {
-            if (!tarihStr) return '';
+            if (!tarihStr) return '-';
             let str = tarihStr.toString().trim();
-            
             let d = new Date(str);
             if (!isNaN(d.getTime()) && (str.includes('GMT') || str.includes('00:00:00') || str.includes('2026') || str.includes('2027') || str.includes('2025'))) {
                 let gun = String(d.getDate()).padStart(2, '0');
@@ -186,11 +202,9 @@
                     document.getElementById('resMarka').innerText = bulunan.marka || '-';
                     document.getElementById('resGirisTarihi').innerText = bulunan.girisTarihi || '-';
                     document.getElementById('resKM').innerText = bulunan.km || '-';
-                    
-                    // Tarih alanlarını temizleme fonksiyonundan geçiriyoruz
-                    document.getElementById('resTeslim').innerText = temizleTarih(bulunan.teslim) || '-';
-                    document.getElementById('resGelecek').innerText = temizleTarih(bulunan.gelecekBakim) || '-';
-                    
+                    document.getElementById('resTeslim').innerText = temizleTarih(bulunan.teslim);
+                    document.getElementById('resGelecekTarih').innerText = temizleTarih(bulunan.gelecekBakim);
+                    document.getElementById('resGelecekKM').innerText = '-';
                     document.getElementById('resAriza').innerText = bulunan.ariza || '-';
                     document.getElementById('resIsler').innerText = bulunan.isler || '-';
                     document.getElementById('resVeresiye').innerText = bulunan.veresiye || '-';
