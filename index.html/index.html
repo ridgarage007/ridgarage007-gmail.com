@@ -93,6 +93,14 @@
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-box-archive mr-1 text-sky-400"></i> Yapılan İşler ve İşçilik</span>
                         <span id="resMalzemeler" class="font-semibold text-slate-200"></span>
                     </div>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-boxes-stacked mr-1 text-amber-400"></i> Kullanılan Malzemeler / Parçalar</span>
+                        <span id="resParcalar" class="font-semibold text-amber-300"></span>
+                    </div>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-tags mr-1 text-emerald-400"></i> Malzeme & İşçilik Fiyatları</span>
+                        <span id="resFiyatlar" class="font-semibold text-emerald-300 text-base"></span>
+                    </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-circle-check mr-1 text-emerald-400"></i> Araç Teslim Tarihi</span>
                         <span id="resTeslimTarihi" class="font-semibold text-emerald-400"></span>
@@ -138,7 +146,7 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxU-keoMRBD-njWfXqA0C-RMbYKmHctzvzw_q--autxOIqHLlVmVvxLqF9Pa6ihqu8/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzTmlkmJt9IhRkq5cJirbsXfsMbImPoY8TCj3cR4nvXHlW3lMrZO7fkoxm7u_mAdpWt/exec';
 
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '';
@@ -185,7 +193,6 @@
                 const response = await fetch(scriptURL);
                 const servisVeritabani = await response.json();
 
-                // Aynı plakadan birden fazla varsa en son eklenen (en güncel) kaydı bulur
                 const eşleşenler = servisVeritabani.filter(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
                 const bulunan = eşleşenler.length > 0 ? eşleşenler[eşleşenler.length - 1] : null;
 
@@ -199,6 +206,10 @@
                     document.getElementById('resKM').innerText = temizleTarih(bulunan.km);
                     document.getElementById('resAriza').innerText = bulunan.ariza;
                     document.getElementById('resMalzemeler').innerText = bulunan.malzemeler;
+                    
+                    document.getElementById('resParcalar').innerText = bulunan.parcalar;
+                    document.getElementById('resFiyatlar').innerText = bulunan.fiyatlar;
+                    
                     document.getElementById('resTeslimTarihi').innerText = temizleTarih(bulunan.teslimTarihi);
                     document.getElementById('resGelecekKM').innerText = temizleTarih(bulunan.gelecekKM);
                     
