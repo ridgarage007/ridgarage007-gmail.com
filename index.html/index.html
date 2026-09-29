@@ -146,7 +146,7 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzntDLS8cqMbUZOdQ02yfMt6YwOI7bMOKruzjTxQTXCmzPoQu97-b9sehU6aqKVNbwJ/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzgh_dic1KKObAs6A0kmsVVH4rBiXa5gFdIi3twiloeaMNB2zAEYxocfw79PP93aDib/exec';
 
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '';
@@ -191,6 +191,7 @@
 
             try {
                 const response = await fetch(scriptURL);
+                if (!response.ok) throw new Error('Network response was not ok');
                 const servisVeritabani = await response.json();
 
                 const eşleşenler = servisVeritabani.filter(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
