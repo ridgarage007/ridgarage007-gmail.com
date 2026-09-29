@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RID GARAGE - VAG Grubu Uzman Servis</title>
+    <title>RID GARAGE - VAG Grubu & Otomatik Şanzıman Uzman Servis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,18 +11,18 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
 
-    <!-- VAG Grubu Özel Kurumsal Başlık -->
+    <!-- VAG Grubu ve Otomatik Şanzıman Özel Kurumsal Başlık -->
     <header class="bg-sky-950 border-b border-sky-800/50 py-4 px-6 shadow-xl">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="bg-sky-600 text-white p-2.5 rounded-2xl shadow-lg border border-sky-400/30">
-                    <i class="fa-solid fa-car-rear text-xl"></i>
+                    <i class="fa-solid fa-gears text-xl"></i>
                 </div>
                 <div>
                     <h1 class="text-xl font-extrabold tracking-wider text-white flex items-center gap-2">
                         RID GARAGE <span class="text-xs bg-sky-600/60 text-sky-200 px-2 py-0.5 rounded-full font-medium">VAG SPECIALIST</span>
                     </h1>
-                    <p class="text-xs text-sky-300/80">Volkswagen • Audi • Seat • Skoda Uzman Servis | Antalya</p>
+                    <p class="text-xs text-sky-300/80">Volkswagen • Audi • Seat • Skoda Uzman Servis & Otomatik Şanzıman</p>
                 </div>
             </div>
             <!-- Göz Alıcı Mavi WhatsApp, Telefon ve Instagram Butonları -->
@@ -134,18 +134,16 @@
     </main>
 
     <footer class="bg-slate-950 border-t border-slate-900 py-4 px-6 text-center text-xs text-slate-500 mt-8">
-        <p>© 2026 RID GARAGE - VAG Grubu Uzman Servis. Tüm Hakları Saklıdır.</p>
+        <p>© 2026 RID GARAGE - VAG Grubu Uzman Servis & Otomatik Şanzıman. Tüm Hakları Saklıdır.</p>
     </footer>
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxU-keoMRBD-njWfXqA0C-RMbYKmHctzvzw_q--autxOIqHLlVmVvxLqF9Pa6ihqu8/exec';
 
-        // Tarihleri saatlerden ve uzun İngilizce metinlerden arındıran efsane süzgeç
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '';
             let str = tarihStr.toString().trim();
             
-            // Eğer içinde İngilizce ay ismi (Jan, Feb...) veya GMT geçiyorsa parçalayalım
             let aylar = {Jan:1, Feb:2, Mar:3, Apr:4, May:5, Jun:6, Jul:7, Aug:8, Sep:9, Oct:10, Nov:11, Dec:12};
             let match = str.match(/([a-zA-Z]{3})\s+([a-zA-Z]{3})\s+(\d{2})\s+(\d{4})/);
             
@@ -184,11 +182,12 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Aranıyor...</span>';
 
             try {
-                // Her sorgulamada güncel veriyi çekmesi için önbellek sıfırlanıyor (eski saatli veri takılı kalmasın diye)
                 const response = await fetch(scriptURL);
                 const servisVeritabani = await response.json();
 
-                const bulunan = servisVeritabani.find(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
+                // Aynı plakadan birden fazla varsa en son eklenen (en güncel) kaydı bulur
+                const eşleşenler = servisVeritabani.filter(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
+                const bulunan = eşleşenler.length > 0 ? eşleşenler[eşleşenler.length - 1] : null;
 
                 if (bulunan) {
                     document.getElementById('resPlaka').innerText = bulunan.plaka;
@@ -197,7 +196,7 @@
                     document.getElementById('resMarka').innerText = bulunan.marka;
                     
                     document.getElementById('resGirisTarihi').innerText = temizleTarih(bulunan.girisTarihi);
-                    document.getElementById('resKM').innerText = temizleTarih(bulunan.km); // Yağ değişim tarihi süzgeçten geçiyor
+                    document.getElementById('resKM').innerText = temizleTarih(bulunan.km);
                     document.getElementById('resAriza').innerText = bulunan.ariza;
                     document.getElementById('resMalzemeler').innerText = bulunan.malzemeler;
                     document.getElementById('resTeslimTarihi').innerText = temizleTarih(bulunan.teslimTarihi);
