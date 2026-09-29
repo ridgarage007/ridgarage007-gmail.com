@@ -47,7 +47,7 @@
                     <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-sky-400"><i class="fa-solid fa-car"></i></span>
                     <input type="text" id="plateInput" placeholder="07RID07" class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3.5 pl-11 pr-4 text-white uppercase placeholder-slate-600 focus:outline-none focus:border-sky-500 font-mono tracking-widest text-lg shadow-inner">
                 </div>
-                <button onclick="searchPlate()" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-3.5 rounded-2xl font-semibold transition shadow-lg shadow-sky-600/20 flex items-center space-x-2">
+                <button onclick="searchPlate()" id="searchBtn" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-3.5 rounded-2xl font-semibold transition shadow-lg shadow-sky-600/20 flex items-center space-x-2">
                     <i class="fa-solid fa-search"></i>
                     <span>Sorgula</span>
                 </button>
@@ -139,11 +139,42 @@
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwPKkVWXWALUCp4KBuBeRhngEpefEL8SNyX_zEAZHgevvd9VXyuRwKTqRBmjecdOLqj/exec';
+        
+        let cachedData = null;
+
+        // Tarih formatını tertemiz düzeltip saatleri uçuran fonksiyon
+        function temizleTarih(tarihStr) {
+            if (!tarihStr) return '';
+            let str = tarihStr.toString();
+            // Eğer JavaScript tarih objesi olarak geldiyse veya içinde GMT geçiyorsa formatla
+            if (str.includes('GMT') || str.includes('00:00:00')) {
+                let d = new Date(str);
+                if (!isNaN(d.getTime())) {
+                    let gun = String(d.getDate()).padStart(2, '0');
+                    let ay = String(d.getMonth() + 1).padStart(2, '0');
+                    let yil = d.getFullYear();
+                    return gun + '.' + ay + '.' + yil;
+                }
+            }
+            // Düz metin olarak geldiyse ve içinde saat varsa ilk boşluğa kadarki kısmı al
+            return str.split(' 00:00:00')[0].split(' GMT')[0];
+        }
+
+        async function preloadData() {
+            try {
+                const response = await fetch(scriptURL);
+                cachedData = await response.json();
+            } catch (err) {
+                console.error("Önbellekleme hatası:", err);
+            }
+        }
+        window.onload = preloadData;
 
         async function searchPlate() {
             const inputVal = document.getElementById('plateInput').value.trim().toUpperCase().replace(/\s+/g, '');
             const resultCard = document.getElementById('resultContainer');
             const notFoundCard = document.getElementById('notFoundCard');
+            const btn = document.getElementById('searchBtn');
 
             if (!inputVal) {
                 alert('Lütfen geçerli bir plaka girin!');
@@ -152,24 +183,30 @@
 
             resultCard.classList.add('hidden');
             notFoundCard.classList.add('hidden');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Aranıyor...</span>';
 
             try {
-                const response = await fetch(scriptURL);
-                const servisVeritabani = await response.json();
+                if (!cachedData) {
+                    const response = await fetch(scriptURL);
+                    cachedData = await response.json();
+                }
 
-                const bulunan = servisVeritabani.find(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
+                const bulunan = cachedData.find(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
 
                 if (bulunan) {
                     document.getElementById('resPlaka').innerText = bulunan.plaka;
                     document.getElementById('resAdSoyad').innerText = bulunan.adSoyad;
                     document.getElementById('resTelefon').innerText = bulunan.telefon;
                     document.getElementById('resMarka').innerText = bulunan.marka;
-                    document.getElementById('resGirisTarihi').innerText = bulunan.girisTarihi;
+                    
+                    // Saatler tamamen temizlenmiş tertemiz tarihler basılıyor
+                    document.getElementById('resGirisTarihi').innerText = temizleTarih(bulunan.girisTarihi);
                     document.getElementById('resKM').innerText = bulunan.km;
                     document.getElementById('resAriza').innerText = bulunan.ariza;
                     document.getElementById('resMalzemeler').innerText = bulunan.malzemeler;
-                    document.getElementById('resTeslimTarihi').innerText = bulunan.teslimTarihi;
+                    document.getElementById('resTeslimTarihi').innerText = temizleTarih(bulunan.teslimTarihi);
                     document.getElementById('resGelecekKM').innerText = bulunan.gelecekKM;
+                    
                     document.getElementById('resVeresiye').innerText = bulunan.veresiye;
                     document.getElementById('resNakit').innerText = bulunan.nakit;
                     document.getElementById('resKrediKarti').innerText = bulunan.krediKarti;
@@ -182,6 +219,8 @@
                 console.error(err);
                 alert('Veriler çekilirken bir hata oluştu!');
                 notFoundCard.classList.remove('hidden');
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-search"></i><span>Sorgula</span>';
             }
         }
     </script>
