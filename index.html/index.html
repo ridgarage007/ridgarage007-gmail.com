@@ -131,7 +131,7 @@
                         <span id="resKredi" class="font-semibold text-slate-200"></span>
                     </div>
 
-                    <!-- YENİ: Toplam Tutar (İşçilik Dahil) Alanı -->
+                    <!-- Toplam Tutar Alanı -->
                     <div class="bg-gradient-to-r from-sky-900/60 to-blue-900/60 p-4 rounded-2xl border border-sky-400/40 sm:col-span-2 shadow-lg flex items-center justify-between">
                         <div>
                             <span class="text-sky-200 block text-xs uppercase tracking-wider font-semibold"><i class="fa-solid fa-receipt mr-1.5 text-sky-400"></i> Toplam Servis Ücreti</span>
@@ -164,7 +164,7 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyT4VaAjpnCQlFO5Kg7Q4uwsoJbRMB-pLq-DDaNpVLlKUBPSCxtIPRQtEIMhzc9CKFu/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycby2LXFvhLBeCDXxzkxVWkFDTrO4UbBoCW7c6gBxbGsGMMvirOpvyjmvvg9HQ7h0DEKU/exec';
 
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '-';
@@ -220,15 +220,14 @@
                     document.getElementById('resNakit').innerText = bulunan.nakit || '-';
                     document.getElementById('resKredi').innerText = bulunan.krediKarti || '-';
                     
-                    // Toplam Tutar (Eğer e-tabloda N sütununda toplam fiyat varsa onu yazar, yoksa Nakit+Kredi toplamını hesaplar)
-                    let toplamDeger = bulunan.toplam || bulunan.fiyat || '-';
-                    if (toplamDeger === '-' || !toplamDeger) {
-                        // Eğer ayrı sütun yoksa nakit ve kredi kartı rakamlarını topla
-                        let nakitRakam = parseFloat((bulunan.nakit || '0').toString().replace(/[^\d]/g, '')) || 0;
-                        let krediRakam = parseFloat((bulunan.krediKarti || '0').toString().replace(/[^\d]/g, '')) || 0;
-                        let veresiyeRakam = parseFloat((bulunan.veresiye || '0').toString().replace(/[^\d]/g, '')) || 0;
-                        let genelTop = nakitRakam + krediRakam + veresiyeRakam;
-                        toplamDeger = genelTop > 0 ? genelTop.toLocaleString('tr-TR') + ' ₺' : '-';
+                    // N sütunundaki toplam tutar
+                    let toplamDeger = bulunan.toplam || '-';
+                    if (toplamDeger !== '-' && toplamDeger !== '') {
+                        if (!toplamDeger.toString().includes('₺')) {
+                            toplamDeger = Number(toplamDeger).toLocaleString('tr-TR') + ' ₺';
+                        }
+                    } else {
+                        toplamDeger = '0.00 ₺';
                     }
                     document.getElementById('resToplam').innerText = toplamDeger;
                     
