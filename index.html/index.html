@@ -25,7 +25,7 @@
                     <p class="text-xs text-sky-300/80">Volkswagen • Audi • Seat • Skoda Uzman Servis & Otomatik Şanzıman</p>
                 </div>
             </div>
-            <!-- Göz Alıcı Mavi WhatsApp, Telefon and Instagram Butonları -->
+            <!-- Göz Alıcı Mavi WhatsApp, Telefon ve Instagram Butonları -->
             <div class="flex items-center space-x-2.5">
                 <a href="https://wa.me/905378495172" target="_blank" title="WhatsApp" class="bg-sky-500 hover:bg-sky-400 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-lg"><i class="fa-brands fa-whatsapp"></i></a>
                 <a href="tel:+905378495172" title="Telefon" class="bg-blue-600 hover:bg-blue-500 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-base"><i class="fa-solid fa-phone"></i></a>
@@ -146,19 +146,7 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbz0-Rr7hAlf9Js1A47wlwFPB5taqsYHikJ36Q6Hi-dCfq2P_z_iPijdvC5Kvx6TSWKs/exec';
-        
-        let cachedData = null;
-
-        async function preloadData() {
-            try {
-                const response = await fetch(scriptURL);
-                cachedData = await response.json();
-            } catch (err) {
-                console.error("Önbellekleme hatası:", err);
-            }
-        }
-        window.onload = preloadData;
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzntDLS8cqMbUZOdQ02yfMt6YwOI7bMOKruzjTxQTXCmzPoQu97-b9sehU6aqKVNbwJ/exec';
 
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '';
@@ -202,12 +190,10 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Aranıyor...</span>';
 
             try {
-                if (!cachedData) {
-                    const response = await fetch(scriptURL);
-                    cachedData = await response.json();
-                }
+                const response = await fetch(scriptURL);
+                const servisVeritabani = await response.json();
 
-                const eşleşenler = cachedData.filter(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
+                const eşleşenler = servisVeritabani.filter(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
                 const bulunan = eşleşenler.length > 0 ? eşleşenler[eşleşenler.length - 1] : null;
 
                 if (bulunan) {
@@ -237,15 +223,8 @@
                 }
             } catch (err) {
                 console.error(err);
-                try {
-                    const response = await fetch(scriptURL);
-                    cachedData = await response.json();
-                    searchPlate();
-                    return;
-                } catch (innerErr) {
-                    alert('Veriler çekilirken bir hata oluştu! İnternet bağlantınızı kontrol edin.');
-                    notFoundCard.classList.remove('hidden');
-                }
+                alert('Veriler çekilirken bir hata oluştu! İnternet bağlantınızı kontrol edin.');
+                notFoundCard.classList.remove('hidden');
             } finally {
                 btn.innerHTML = '<i class="fa-solid fa-search"></i><span>Sorgula</span>';
             }
