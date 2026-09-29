@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div id="resultContainer" class="hidden space-y-4">
+        <div id="resultContainer" class="hidden space-y-4 mb-6">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-xl font-semibold uppercase">Servis Kaydı</div>
                 <h3 class="text-xl font-bold text-white mb-4 flex items-center space-x-2">
@@ -90,10 +90,19 @@
             </div>
         </div>
 
-        <div id="notFoundCard" class="hidden bg-slate-800 border border-slate-700 rounded-2xl p-6 text-center shadow-xl">
+        <div id="notFoundCard" class="hidden bg-slate-800 border border-slate-700 rounded-2xl p-6 text-center shadow-xl mb-6">
             <div class="text-red-500 text-4xl mb-3"><i class="fa-solid fa-circle-exclamation"></i></div>
             <h3 class="text-lg font-bold text-white mb-1">Kayıt Bulunamadı</h3>
             <p class="text-sm text-slate-400">Girdiğiniz plakaya ait aktif bir servis kaydı sistemde bulunamadı.</p>
+        </div>
+
+        <!-- QR KOD BÖLÜMÜ -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 text-center shadow-xl">
+            <h3 class="text-base font-semibold text-slate-200 mb-3">DÜKKAN SERVİS QR KODUNUZ</h3>
+            <div class="bg-white p-4 inline-block rounded-xl shadow-md mb-3">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://ridgarage007.github.io/ridgarage007-gmail.com/" alt="Servis QR Kod" class="mx-auto">
+            </div>
+            <p class="text-xs text-slate-400">Bu karekodu telefonunuza kaydedebilir veya kartvizit, etiket baskısı için matbaaya doğrudan verebilirsiniz.</p>
         </div>
     </main>
 
@@ -102,22 +111,9 @@
     </footer>
 
     <script>
-        // Dükkandaki servis veritabanı (İstediğin kadar aracı buraya ekleyebilirsin kanka)
-        const servisVeritabani = [
-            {
-                plaka: "07RID07",
-                adSoyad: "Recep Demir",
-                telefon: "0537 849 51 72",
-                girisTarihi: "29.09.2026",
-                km: "45.000 KM",
-                ariza: "Periyodik bakım ve kontrol",
-                malzemeler: "Motor yağı, Yağ filtresi, Polen filtresi",
-                teslimTarihi: "29.09.2026",
-                gelecekKM: "55.000 KM"
-            }
-        ];
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxF1Tffk8g3c1mbqks0o7ucX-62VlPie6ZILmO1ckGcYvsni6j3JhDabNQEgj35Tdom/exec';
 
-        function searchPlate() {
+        async function searchPlate() {
             const inputVal = document.getElementById('plateInput').value.trim().toUpperCase().replace(/\s+/g, '');
             const resultCard = document.getElementById('resultContainer');
             const notFoundCard = document.getElementById('notFoundCard');
@@ -130,21 +126,30 @@
             resultCard.classList.add('hidden');
             notFoundCard.classList.add('hidden');
 
-            const bulunan = servisVeritabani.find(item => item.plaka.replace(/\s+/g, '') === inputVal);
+            try {
+                const response = await fetch(scriptURL);
+                const servisVeritabani = await response.json();
 
-            if (bulunan) {
-                document.getElementById('resPlaka').innerText = bulunan.plaka;
-                document.getElementById('resAdSoyad').innerText = bulunan.adSoyad;
-                document.getElementById('resTelefon').innerText = bulunan.telefon;
-                document.getElementById('resGirisTarihi').innerText = bulunan.girisTarihi;
-                document.getElementById('resKM').innerText = bulunan.km;
-                document.getElementById('resAriza').innerText = bulunan.ariza;
-                document.getElementById('resMalzemeler').innerText = bulunan.malzemeler;
-                document.getElementById('resTeslimTarihi').innerText = bulunan.teslimTarihi;
-                document.getElementById('resGelecekKM').innerText = bulunan.gelecekKM;
-                
-                resultCard.classList.remove('hidden');
-            } else {
+                const bulunan = servisVeritabani.find(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
+
+                if (bulunan) {
+                    document.getElementById('resPlaka').innerText = bulunan.plaka;
+                    document.getElementById('resAdSoyad').innerText = bulunan.adSoyad;
+                    document.getElementById('resTelefon').innerText = bulunan.telefon;
+                    document.getElementById('resGirisTarihi').innerText = bulunan.girisTarihi;
+                    document.getElementById('resKM').innerText = bulunan.km;
+                    document.getElementById('resAriza').innerText = bulunan.ariza;
+                    document.getElementById('resMalzemeler').innerText = bulunan.malzemeler;
+                    document.getElementById('resTeslimTarihi').innerText = bulunan.teslimTarihi;
+                    document.getElementById('resGelecekKM').innerText = bulunan.gelecekKM;
+                    
+                    resultCard.classList.remove('hidden');
+                } else {
+                    notFoundCard.classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Veriler çekilirken bir hata oluştu!');
                 notFoundCard.classList.remove('hidden');
             }
         }
