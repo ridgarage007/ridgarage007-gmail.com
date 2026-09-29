@@ -67,11 +67,11 @@
                         <span id="resMarka" class="font-semibold text-slate-200"></span>
                     </div>
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-calendar-days mr-1 text-red-400"></i> Servise Giriş ve KM Tarih</span>
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-calendar-days mr-1 text-red-400"></i> Servis Giriş ve KM Tarih</span>
                         <span id="resGirisTarihi" class="font-semibold text-slate-200"></span>
                     </div>
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-oil-can mr-1 text-yellow-400"></i> Yağ Değişim Tarih & KM</span>
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-oil-can mr-1 text-yellow-400"></i> Yağ Değişimi Tarih & KM</span>
                         <span id="resKM" class="font-semibold text-yellow-400"></span>
                     </div>
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50 sm:col-span-2">
@@ -79,7 +79,7 @@
                         <span id="resAriza" class="font-semibold text-slate-200"></span>
                     </div>
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50 sm:col-span-2">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-box-archive mr-1 text-red-400"></i> Yapılan İşler & İşçilik</span>
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-box-archive mr-1 text-red-400"></i> Yapılan İşler ve İşçilik</span>
                         <span id="resMalzemeler" class="font-semibold text-slate-200"></span>
                     </div>
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
@@ -89,6 +89,18 @@
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-road mr-1 text-blue-400"></i> Gelecek Dönem Bakım Tarihi ve KM</span>
                         <span id="resGelecekKM" class="font-semibold text-blue-400"></span>
+                    </div>
+                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-file-invoice-dollar mr-1 text-purple-400"></i> Veresiye</span>
+                        <span id="resVeresiye" class="font-semibold text-slate-200"></span>
+                    </div>
+                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-wallet mr-1 text-emerald-400"></i> Nakit</span>
+                        <span id="resNakit" class="font-semibold text-slate-200"></span>
+                    </div>
+                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50 sm:col-span-2">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-credit-card mr-1 text-blue-400"></i> Kredi Kartı</span>
+                        <span id="resKrediKarti" class="font-semibold text-slate-200"></span>
                     </div>
                 </div>
             </div>
@@ -147,6 +159,9 @@
                     document.getElementById('resMalzemeler').innerText = bulunan.malzemeler;
                     document.getElementById('resTeslimTarihi').innerText = bulunan.teslimTarihi;
                     document.getElementById('resGelecekKM').innerText = bulunan.gelecekKM;
+                    document.getElementById('resVeresiye').innerText = bulunan.veresiye;
+                    document.getElementById('resNakit').innerText = bulunan.nakit;
+                    document.getElementById('resKrediKarti').innerText = bulunan.krediKarti;
                     
                     resultCard.classList.remove('hidden');
                 } else {
