@@ -138,23 +138,25 @@
     </footer>
 
     <script>
-        // En güncel ve taptaze Google Apps Script URL'si
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxU-keoMRBD-njWfXqA0C-RMbYKmHctzvzw_q--autxOIqHLlVmVvxLqF9Pa6ihqu8/exec';
         
         let cachedData = null;
 
+        // Saatleri ve karmaşık metinleri kökten temizleyip tertemiz tarihe çeviren güçlü fonksiyon
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '';
-            let str = tarihStr.toString();
-            if (str.includes('GMT') || str.includes('00:00:00')) {
-                let d = new Date(str);
-                if (!isNaN(d.getTime())) {
-                    let gun = String(d.getDate()).padStart(2, '0');
-                    let ay = String(d.getMonth() + 1).padStart(2, '0');
-                    let yil = d.getFullYear();
-                    return gun + '.' + ay + '.' + yil;
-                }
+            let str = tarihStr.toString().trim();
+            
+            // Eğer içinde saat veya GMT geçiyorsa veya tarih objesi gibi geldiyse
+            let d = new Date(str);
+            if (!isNaN(d.getTime()) && (str.includes('GMT') || str.includes('00:00:00') || str.includes('Jan') || str.includes('Feb') || str.includes('Mar') || str.includes('Apr') || str.includes('May') || str.includes('Jun') || str.includes('Jul') || str.includes('Aug') || str.includes('Sep') || str.includes('Oct') || str.includes('Nov') || str.includes('Dec'))) {
+                let gun = String(d.getDate()).padStart(2, '0');
+                let ay = String(d.getMonth() + 1).padStart(2, '0');
+                let yil = d.getFullYear();
+                return gun + '.' + ay + '.' + yil;
             }
+            
+            // Düz metin içinde saat kalmışsa kesip atalım
             return str.split(' 00:00:00')[0].split(' GMT')[0];
         }
 
@@ -197,6 +199,7 @@
                     document.getElementById('resTelefon').innerText = bulunan.telefon;
                     document.getElementById('resMarka').innerText = bulunan.marka;
                     
+                    // Bütün tarihler saatlerden arındırılmış olarak tertemiz basılıyor
                     document.getElementById('resGirisTarihi').innerText = temizleTarih(bulunan.girisTarihi);
                     document.getElementById('resKM').innerText = bulunan.km;
                     document.getElementById('resAriza').innerText = bulunan.ariza;
