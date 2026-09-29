@@ -11,7 +11,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
 
-    <!-- VAG Grubu ve Otomatik Şanzıman Özel Kurumsal Başlık -->
+    <!-- Kurumsal Başlık -->
     <header class="bg-sky-950 border-b border-sky-800/50 py-4 px-6 shadow-xl">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -25,7 +25,6 @@
                     <p class="text-xs text-sky-300/80">Volkswagen • Audi • Seat • Skoda Uzman Servis & Otomatik Şanzıman</p>
                 </div>
             </div>
-            <!-- Göz Alıcı Mavi WhatsApp, Telefon ve Instagram Butonları -->
             <div class="flex items-center space-x-2.5">
                 <a href="https://wa.me/905378495172" target="_blank" title="WhatsApp" class="bg-sky-500 hover:bg-sky-400 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-lg"><i class="fa-brands fa-whatsapp"></i></a>
                 <a href="tel:+905378495172" title="Telefon" class="bg-blue-600 hover:bg-blue-500 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-base"><i class="fa-solid fa-phone"></i></a>
@@ -78,32 +77,28 @@
                         <span id="resMarka" class="font-semibold text-sky-300"></span>
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-calendar-days mr-1 text-sky-400"></i> Servis Giriş ve KM Tarih</span>
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-calendar-days mr-1 text-sky-400"></i> Servis Giriş ve KM</span>
                         <span id="resGirisTarihi" class="font-semibold text-slate-200"></span>
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-oil-can mr-1 text-yellow-400"></i> Yağ Değişimi Tarih & KM</span>
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-oil-can mr-1 text-yellow-400"></i> Yağ Değişim KM & Tarih</span>
                         <span id="resKM" class="font-semibold text-yellow-400"></span>
+                    </div>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-circle-check mr-1 text-emerald-400"></i> Araç Teslim Tarihi</span>
+                        <span id="resTeslim" class="font-semibold text-emerald-400"></span>
+                    </div>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-road mr-1 text-sky-400"></i> Gelecek Dönem Bakım</span>
+                        <span id="resGelecek" class="font-semibold text-sky-400"></span>
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-triangle-exclamation mr-1 text-red-400"></i> Müşteri Belirttiği Arıza</span>
                         <span id="resAriza" class="font-semibold text-slate-200"></span>
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-box-archive mr-1 text-sky-400"></i> Yapılan İşler ve İşçilik</span>
-                        <span id="resMalzemeler" class="font-semibold text-slate-200"></span>
-                    </div>
-                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-boxes-stacked mr-1 text-amber-400"></i> Kullanılan Malzemeler / Parçalar</span>
-                        <span id="resParcalar" class="font-semibold text-amber-300"></span>
-                    </div>
-                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-circle-check mr-1 text-emerald-400"></i> Araç Teslim Tarihi</span>
-                        <span id="resTeslimTarihi" class="font-semibold text-emerald-400"></span>
-                    </div>
-                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-road mr-1 text-sky-400"></i> Gelecek Dönem Bakım Tarihi ve KM</span>
-                        <span id="resGelecekKM" class="font-semibold text-sky-400"></span>
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-box-archive mr-1 text-sky-400"></i> Yapılan İşler & İşçilik</span>
+                        <span id="resIsler" class="font-semibold text-slate-200"></span>
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-file-invoice-dollar mr-1 text-purple-400"></i> Veresiye</span>
@@ -115,7 +110,7 @@
                     </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-credit-card mr-1 text-sky-400"></i> Kredi Kartı</span>
-                        <span id="resKrediKarti" class="font-semibold text-slate-200"></span>
+                        <span id="resKredi" class="font-semibold text-slate-200"></span>
                     </div>
                 </div>
             </div>
@@ -142,23 +137,7 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbx03g4ybHfgaBS2EdEo1GXGu4VElSdfESxNrytHYB3QUOrfZfXb9hfjiz9Lo7wZzfX1/exec';
-
-        function temizleTarih(tarihStr) {
-            if (!tarihStr) return '';
-            let str = tarihStr.toString().trim();
-            
-            let d = new Date(str);
-            if (!isNaN(d.getTime()) && (str.includes('GMT') || str.includes('00:00:00') || str.includes('2026') || str.includes('2027'))) {
-                let gun = String(d.getDate()).padStart(2, '0');
-                let ay = String(d.getMonth() + 1).padStart(2, '0');
-                let yil = d.getFullYear();
-                if (yil > 2000) {
-                    return gun + '.' + ay + '.' + yil;
-                }
-            }
-            return str.split(' 00:00:00')[0].split(' GMT')[0];
-        }
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyT4VaAjpnCQlFO5Kg7Q4uwsoJbRMB-pLq-DDaNpVLlKUBPSCxtIPRQtEIMhzc9CKFu/exec';
 
         async function searchPlate() {
             const inputVal = document.getElementById('plateInput').value.trim().toUpperCase().replace(/\s+/g, '');
@@ -188,19 +167,15 @@
                     document.getElementById('resAdSoyad').innerText = bulunan.adSoyad || '-';
                     document.getElementById('resTelefon').innerText = bulunan.telefon || '-';
                     document.getElementById('resMarka').innerText = bulunan.marka || '-';
-                    
-                    document.getElementById('resGirisTarihi').innerText = temizleTarih(bulunan.girisTarihi) || '-';
-                    document.getElementById('resKM').innerText = temizleTarih(bulunan.km) || '-';
+                    document.getElementById('resGirisTarihi').innerText = bulunan.girisTarihi || '-';
+                    document.getElementById('resKM').innerText = bulunan.km || '-';
+                    document.getElementById('resTeslim').innerText = bulunan.teslim || '-';
+                    document.getElementById('resGelecek').innerText = bulunan.gelecekBakim || '-';
                     document.getElementById('resAriza').innerText = bulunan.ariza || '-';
-                    document.getElementById('resMalzemeler').innerText = bulunan.malzemeler || '-';
-                    document.getElementById('resParcalar').innerText = temizleTarih(bulunan.parcalar) || '-';
-                    
-                    document.getElementById('resTeslimTarihi').innerText = temizleTarih(bulunan.teslimTarihi) || '-';
-                    document.getElementById('resGelecekKM').innerText = temizleTarih(bulunan.gelecekKM) || '-';
-                    
+                    document.getElementById('resIsler').innerText = bulunan.isler || '-';
                     document.getElementById('resVeresiye').innerText = bulunan.veresiye || '-';
                     document.getElementById('resNakit').innerText = bulunan.nakit || '-';
-                    document.getElementById('resKrediKarti').innerText = bulunan.krediKarti || '-';
+                    document.getElementById('resKredi').innerText = bulunan.krediKarti || '-';
                     
                     resultCard.classList.remove('hidden');
                 } else {
