@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RID GARAGE - Periyodik Bakım ve Servis Takip</title>
+    <title>RID GARAGE - VAG Grubu Uzman Servis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>body { font-family: 'Inter', sans-serif; }</style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
 
-    <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 shadow-md">
+    <!-- VAG Grubu Özel Kurumsal Başlık -->
+    <header class="bg-sky-950 border-b border-sky-800/50 py-4 px-6 shadow-xl">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="bg-red-600 text-white p-2.5 rounded-xl shadow-lg">
-                    <i class="fa-solid fa-wrench text-xl"></i>
+                <div class="bg-sky-600 text-white p-2.5 rounded-2xl shadow-lg border border-sky-400/30">
+                    <i class="fa-solid fa-car-rear text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-wider text-white">RID GARAGE</h1>
-                    <p class="text-xs text-slate-400">Antalya / Muratpaşa</p>
+                    <h1 class="text-xl font-extrabold tracking-wider text-white flex items-center gap-2">
+                        RID GARAGE <span class="text-xs bg-sky-600/60 text-sky-200 px-2 py-0.5 rounded-full font-medium">VAG SPECIALIST</span>
+                    </h1>
+                    <p class="text-xs text-sky-300/80">Volkswagen • Audi • Seat • Skoda Uzman Servis | Antalya</p>
                 </div>
             </div>
-            <!-- Sosyal Medya ve İletişim İkonları (Göz alıcı Mavi Tonları) -->
+            <!-- Göz Alıcı Mavi WhatsApp, Telefon ve Instagram Butonları -->
             <div class="flex items-center space-x-2.5">
                 <a href="https://wa.me/905378495172" target="_blank" title="WhatsApp" class="bg-sky-500 hover:bg-sky-400 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-lg"><i class="fa-brands fa-whatsapp"></i></a>
                 <a href="tel:+905378495172" title="Telefon" class="bg-blue-600 hover:bg-blue-500 text-white w-10 h-10 rounded-xl flex items-center justify-center transition shadow-lg text-base"><i class="fa-solid fa-phone"></i></a>
@@ -32,103 +35,110 @@
     </header>
 
     <main class="max-w-4xl mx-auto w-full p-4 sm:p-6 flex-grow">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl mb-6">
-            <h2 class="text-lg font-semibold mb-2 text-slate-200">Plaka Sorgulama</h2>
-            <p class="text-sm text-slate-400 mb-4">Aracınızın durumunu öğrenmek için lütfen plakanızı girin (Örn: 07RID07).</p>
+        <!-- Arama Kutusu -->
+        <div class="bg-slate-900 border border-sky-900/40 rounded-3xl p-6 shadow-2xl mb-6 relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-sky-600/10 rounded-full blur-2xl pointer-events-none"></div>
+            <h2 class="text-lg font-semibold mb-2 text-sky-200 flex items-center gap-2">
+                <i class="fa-solid fa-magnifying-glass-location text-sky-400"></i> Araç Servis Sorgulama
+            </h2>
+            <p class="text-sm text-slate-400 mb-4">Aracınızın bakım ve servis geçmişini görmek için plakanızı girin (Örn: 07RID07).</p>
             <div class="flex gap-2">
                 <div class="relative flex-grow">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><i class="fa-solid fa-car"></i></span>
-                    <input type="text" id="plateInput" placeholder="07RID07" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 pl-11 pr-4 text-white uppercase placeholder-slate-500 focus:outline-none focus:border-red-500 font-mono tracking-widest text-lg">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-sky-400"><i class="fa-solid fa-car"></i></span>
+                    <input type="text" id="plateInput" placeholder="07RID07" class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3.5 pl-11 pr-4 text-white uppercase placeholder-slate-600 focus:outline-none focus:border-sky-500 font-mono tracking-widest text-lg shadow-inner">
                 </div>
-                <button onclick="searchPlate()" class="bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-xl font-medium transition shadow-lg flex items-center space-x-2">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                <button onclick="searchPlate()" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-3.5 rounded-2xl font-semibold transition shadow-lg shadow-sky-600/20 flex items-center space-x-2">
+                    <i class="fa-solid fa-search"></i>
                     <span>Sorgula</span>
                 </button>
             </div>
         </div>
 
+        <!-- Sonuç Ekranı -->
         <div id="resultContainer" class="hidden space-y-4 mb-6">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-xl font-semibold uppercase">Servis Kaydı</div>
-                <h3 class="text-xl font-bold text-white mb-4 flex items-center space-x-2">
-                    <i class="fa-solid fa-clipboard-check text-red-500"></i>
-                    <span id="resPlaka" class="font-mono tracking-wider"></span>
+            <div class="bg-slate-900 border border-sky-900/40 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-sky-600 text-white text-xs px-4 py-1.5 rounded-bl-2xl font-bold uppercase tracking-wider shadow">VAG Servis Kaydı</div>
+                <h3 class="text-xl font-bold text-white mb-5 flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-sky-600/20 text-sky-400 flex items-center justify-center border border-sky-500/30">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <span id="resPlaka" class="font-mono tracking-wider text-sky-300"></span>
                 </h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-user mr-1 text-red-400"></i> Müşteri Adı</span>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-user mr-1 text-sky-400"></i> Müşteri Adı</span>
                         <span id="resAdSoyad" class="font-semibold text-slate-200 text-base"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-phone mr-1 text-red-400"></i> Telefon</span>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-phone mr-1 text-sky-400"></i> Telefon</span>
                         <span id="resTelefon" class="font-semibold text-slate-200 text-base font-mono"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-car-side mr-1 text-red-400"></i> Marka & Model</span>
-                        <span id="resMarka" class="font-semibold text-slate-200"></span>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-car-side mr-1 text-sky-400"></i> Marka & Model</span>
+                        <span id="resMarka" class="font-semibold text-sky-300"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-calendar-days mr-1 text-red-400"></i> Servis Giriş ve KM Tarih</span>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-calendar-days mr-1 text-sky-400"></i> Servis Giriş ve KM Tarih</span>
                         <span id="resGirisTarihi" class="font-semibold text-slate-200"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-oil-can mr-1 text-yellow-400"></i> Yağ Değişimi Tarih & KM</span>
                         <span id="resKM" class="font-semibold text-yellow-400"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50 sm:col-span-2">
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-triangle-exclamation mr-1 text-red-400"></i> Müşteri Belirttiği Arıza</span>
                         <span id="resAriza" class="font-semibold text-slate-200"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50 sm:col-span-2">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-box-archive mr-1 text-red-400"></i> Yapılan İşler ve İşçilik</span>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-box-archive mr-1 text-sky-400"></i> Yapılan İşler ve İşçilik</span>
                         <span id="resMalzemeler" class="font-semibold text-slate-200"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-circle-check mr-1 text-emerald-400"></i> Araç Teslim Tarihi</span>
                         <span id="resTeslimTarihi" class="font-semibold text-emerald-400"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-road mr-1 text-blue-400"></i> Gelecek Dönem Bakım Tarihi ve KM</span>
-                        <span id="resGelecekKM" class="font-semibold text-blue-400"></span>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-road mr-1 text-sky-400"></i> Gelecek Dönem Bakım Tarihi ve KM</span>
+                        <span id="resGelecekKM" class="font-semibold text-sky-400"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-file-invoice-dollar mr-1 text-purple-400"></i> Veresiye</span>
                         <span id="resVeresiye" class="font-semibold text-slate-200"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-wallet mr-1 text-emerald-400"></i> Nakit</span>
                         <span id="resNakit" class="font-semibold text-slate-200"></span>
                     </div>
-                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50 sm:col-span-2">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-credit-card mr-1 text-blue-400"></i> Kredi Kartı</span>
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-credit-card mr-1 text-sky-400"></i> Kredi Kartı</span>
                         <span id="resKrediKarti" class="font-semibold text-slate-200"></span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="notFoundCard" class="hidden bg-slate-800 border border-slate-700 rounded-2xl p-6 text-center shadow-xl mb-6">
+        <div id="notFoundCard" class="hidden bg-slate-900 border border-red-900/40 rounded-3xl p-6 text-center shadow-2xl mb-6">
             <div class="text-red-500 text-4xl mb-3"><i class="fa-solid fa-circle-exclamation"></i></div>
             <h3 class="text-lg font-bold text-white mb-1">Kayıt Bulunamadı</h3>
             <p class="text-sm text-slate-400">Girdiğiniz plakaya ait aktif bir servis kaydı sistemde bulunamadı.</p>
         </div>
 
         <!-- QR KOD BÖLÜMÜ -->
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 text-center shadow-xl">
-            <h3 class="text-base font-semibold text-slate-200 mb-3">DÜKKAN SERVİS QR KODUNUZ</h3>
-            <div class="bg-white p-4 inline-block rounded-xl shadow-md mb-3">
+        <div class="bg-slate-900 border border-sky-900/40 rounded-3xl p-6 text-center shadow-2xl">
+            <h3 class="text-sm font-bold tracking-wider text-sky-300 mb-3 uppercase">RID GARAGE VAG SERVİS QR KODU</h3>
+            <div class="bg-white p-4 inline-block rounded-2xl shadow-xl mb-3 border-4 border-sky-500/20">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://ridgarage007.github.io/ridgarage007-gmail.com/" alt="Servis QR Kod" class="mx-auto">
             </div>
-            <p class="text-xs text-slate-400">Bu karekodu telefonunuza kaydedebilir veya kartvizit, etiket baskısı için matbaaya doğrudan verebilirsiniz.</p>
+            <p class="text-xs text-slate-400">Bu karekodu dükkan içinde sergileyebilir veya müşterilerinize iletebilirsiniz.</p>
         </div>
     </main>
 
-    <footer class="bg-slate-800 border-t border-slate-700 py-4 px-6 text-center text-xs text-slate-400 mt-8">
-        <p>© 2026 RID GARAGE - Tüm Hakları Saklıdır.</p>
+    <footer class="bg-slate-950 border-t border-slate-900 py-4 px-6 text-center text-xs text-slate-500 mt-8">
+        <p>© 2026 RID GARAGE - VAG Grubu Uzman Servis. Tüm Hakları Saklıdır.</p>
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwaFSBbgtO3iqUyMukVzCFNSZyYM_ReFQ-i_VhW2NDmRAVabexX1xHGtEK9qeE9Qp7U/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwPKkVWXWALUCp4KBuBeRhngEpefEL8SNyX_zEAZHgevvd9VXyuRwKTqRBmjecdOLqj/exec';
 
         async function searchPlate() {
             const inputVal = document.getElementById('plateInput').value.trim().toUpperCase().replace(/\s+/g, '');
