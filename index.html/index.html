@@ -139,6 +139,23 @@
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbyT4VaAjpnCQlFO5Kg7Q4uwsoJbRMB-pLq-DDaNpVLlKUBPSCxtIPRQtEIMhzc9CKFu/exec';
 
+        // Uzun GMT tarih formatlarını temizleyip GG.AA.YYYY formatına çeviren akıllı fonksiyon
+        function temizleTarih(tarihStr) {
+            if (!tarihStr) return '';
+            let str = tarihStr.toString().trim();
+            
+            let d = new Date(str);
+            if (!isNaN(d.getTime()) && (str.includes('GMT') || str.includes('00:00:00') || str.includes('2026') || str.includes('2027') || str.includes('2025'))) {
+                let gun = String(d.getDate()).padStart(2, '0');
+                let ay = String(d.getMonth() + 1).padStart(2, '0');
+                let yil = d.getFullYear();
+                if (yil > 2000) {
+                    return gun + '.' + ay + '.' + yil;
+                }
+            }
+            return str.split(' 00:00:00')[0].split(' GMT')[0];
+        }
+
         async function searchPlate() {
             const inputVal = document.getElementById('plateInput').value.trim().toUpperCase().replace(/\s+/g, '');
             const resultCard = document.getElementById('resultContainer');
@@ -169,8 +186,11 @@
                     document.getElementById('resMarka').innerText = bulunan.marka || '-';
                     document.getElementById('resGirisTarihi').innerText = bulunan.girisTarihi || '-';
                     document.getElementById('resKM').innerText = bulunan.km || '-';
-                    document.getElementById('resTeslim').innerText = bulunan.teslim || '-';
-                    document.getElementById('resGelecek').innerText = bulunan.gelecekBakim || '-';
+                    
+                    // Tarih alanlarını temizleme fonksiyonundan geçiriyoruz
+                    document.getElementById('resTeslim').innerText = temizleTarih(bulunan.teslim) || '-';
+                    document.getElementById('resGelecek').innerText = temizleTarih(bulunan.gelecekBakim) || '-';
+                    
                     document.getElementById('resAriza').innerText = bulunan.ariza || '-';
                     document.getElementById('resIsler').innerText = bulunan.isler || '-';
                     document.getElementById('resVeresiye').innerText = bulunan.veresiye || '-';
