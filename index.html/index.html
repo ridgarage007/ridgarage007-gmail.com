@@ -63,6 +63,10 @@
                         <span id="resTelefon" class="font-semibold text-slate-200 text-base font-mono"></span>
                     </div>
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-car-side mr-1 text-red-400"></i> Marka & Model</span>
+                        <span id="resMarka" class="font-semibold text-slate-200"></span>
+                    </div>
+                    <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-calendar-days mr-1 text-red-400"></i> Giriş Tarihi</span>
                         <span id="resGirisTarihi" class="font-semibold text-slate-200"></span>
                     </div>
@@ -136,6 +140,7 @@
                     document.getElementById('resPlaka').innerText = bulunan.plaka;
                     document.getElementById('resAdSoyad').innerText = bulunan.adSoyad;
                     document.getElementById('resTelefon').innerText = bulunan.telefon;
+                    document.getElementById('resMarka').innerText = bulunan.marka;
                     document.getElementById('resGirisTarihi').innerText = bulunan.girisTarihi;
                     document.getElementById('resKM').innerText = bulunan.km;
                     document.getElementById('resAriza').innerText = bulunan.ariza;
