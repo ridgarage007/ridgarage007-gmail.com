@@ -83,7 +83,7 @@
                         <span id="resTeslimTarihi" class="font-semibold text-emerald-400"></span>
                     </div>
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-road mr-1 text-blue-400"></i> Sonraki Bakım KM</span>
+                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-road mr-1 text-blue-400"></i> Gelecek Bakım / KM</span>
                         <span id="resGelecekKM" class="font-semibold text-blue-400"></span>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
 
                 let bulunan = null;
                 rows.forEach(row => {
-                    if (row.c && row.c[0]) {
+                    if (row.c && row.c[0] && row.c[0].v !== null) {
                         const sheetPlaka = String(row.c[0].v).trim().toUpperCase().replace(/\s+/g, '');
                         if (sheetPlaka === inputVal) {
                             bulunan = {
@@ -136,8 +136,8 @@
                                 km: row.c[6] ? row.c[6].v : '-',
                                 ariza: row.c[7] ? row.c[7].v : '-',
                                 malzemeler: row.c[8] ? row.c[8].v : '-',
-                                teslimTarihi: row.c[10] ? row.c[10].v : '-',
-                                gelecekKM: row.c[11] ? row.c[11].v : '-'
+                                teslimTarihi: row.c[9] ? row.c[9].v : '-',
+                                gelecekKM: row.c[10] ? row.c[10].v : '-'
                             };
                         }
                     }
