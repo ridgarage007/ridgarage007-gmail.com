@@ -146,7 +146,19 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxkXeKminZK3iDY8I6bmeuHe2B3MxSGQYNtbaIEJO-56d0UMoXl5V4nerxV_Ry1Tf4D/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbytdGWnOxCnOmZ1VMkOSxsmX3VVn9qIXdxHDCTi7f-QBCFGZvd0TupgrST0vfYz9d0d/exec';
+        
+        let cachedData = null;
+
+        async function preloadData() {
+            try {
+                const response = await fetch(scriptURL);
+                cachedData = await response.json();
+            } catch (err) {
+                console.error("Önbellekleme hatası:", err);
+            }
+        }
+        window.onload = preloadData;
 
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '';
@@ -190,10 +202,12 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Aranıyor...</span>';
 
             try {
-                const response = await fetch(scriptURL);
-                const servisVeritabani = await response.json();
+                if (!cachedData) {
+                    const response = await fetch(scriptURL);
+                    cachedData = await response.json();
+                }
 
-                const eşleşenler = servisVeritabani.filter(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
+                const eşleşenler = cachedData.filter(item => item.plaka.replace(/\s+/g, '').toUpperCase() === inputVal);
                 const bulunan = eşleşenler.length > 0 ? eşleşenler[eşleşenler.length - 1] : null;
 
                 if (bulunan) {
@@ -223,8 +237,15 @@
                 }
             } catch (err) {
                 console.error(err);
-                alert('Veriler çekilirken bir hata oluştu!');
-                notFoundCard.classList.remove('hidden');
+                try {
+                    const response = await fetch(scriptURL);
+                    cachedData = await response.json();
+                    searchPlate();
+                    return;
+                } catch (innerErr) {
+                    alert('Veriler çekilirken bir hata oluştu! İnternet bağlantınızı kontrol edin.');
+                    notFoundCard.classList.remove('hidden');
+                }
             } finally {
                 btn.innerHTML = '<i class="fa-solid fa-search"></i><span>Sorgula</span>';
             }
