@@ -97,10 +97,6 @@
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-boxes-stacked mr-1 text-amber-400"></i> Kullanılan Malzemeler / Parçalar</span>
                         <span id="resParcalar" class="font-semibold text-amber-300"></span>
                     </div>
-                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 sm:col-span-2">
-                        <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-tags mr-1 text-emerald-400"></i> Malzeme & İşçilik Fiyatları</span>
-                        <span id="resFiyatlar" class="font-semibold text-emerald-300 text-base"></span>
-                    </div>
                     <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
                         <span class="text-slate-400 block text-xs mb-1"><i class="fa-solid fa-circle-check mr-1 text-emerald-400"></i> Araç Teslim Tarihi</span>
                         <span id="resTeslimTarihi" class="font-semibold text-emerald-400"></span>
@@ -146,31 +142,21 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyFQFVh8NqVFakVwAc8vVDcK3dTyO9PhqBeAk5OgWTBvLLqaOqV54Vk_eFfNsqhmfMq/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyZgCd0W31LptlbjvEId-RBFNYwM-1wSq5LBPDZxabmAQdMrYgIPm0aDhtPaxrA_I7m/exec';
 
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '';
             let str = tarihStr.toString().trim();
             
-            let aylar = {Jan:1, Feb:2, Mar:3, Apr:4, May:5, Jun:6, Jul:7, Aug:8, Sep:9, Oct:10, Nov:11, Dec:12};
-            let match = str.match(/([a-zA-Z]{3})\s+([a-zA-Z]{3})\s+(\d{2})\s+(\d{4})/);
-            
-            if (match) {
-                let ayStr = match[2];
-                let gunStr = match[3];
-                let yilStr = match[4];
-                let ayNum = aylar[ayStr] || 1;
-                return String(gunStr).padStart(2, '0') + '.' + String(ayNum).padStart(2, '0') + '.' + yilStr;
-            }
-
             let d = new Date(str);
-            if (!isNaN(d.getTime()) && (str.includes('GMT') || str.includes('00:00:00'))) {
+            if (!isNaN(d.getTime()) && (str.includes('GMT') || str.includes('00:00:00') || str.includes('2026') || str.includes('2027'))) {
                 let gun = String(d.getDate()).padStart(2, '0');
                 let ay = String(d.getMonth() + 1).padStart(2, '0');
                 let yil = d.getFullYear();
-                return gun + '.' + ay + '.' + yil;
+                if (yil > 2000) {
+                    return gun + '.' + ay + '.' + yil;
+                }
             }
-            
             return str.split(' 00:00:00')[0].split(' GMT')[0];
         }
 
@@ -199,24 +185,22 @@
 
                 if (bulunan) {
                     document.getElementById('resPlaka').innerText = bulunan.plaka;
-                    document.getElementById('resAdSoyad').innerText = bulunan.adSoyad;
-                    document.getElementById('resTelefon').innerText = bulunan.telefon;
-                    document.getElementById('resMarka').innerText = bulunan.marka;
+                    document.getElementById('resAdSoyad').innerText = bulunan.adSoyad || '-';
+                    document.getElementById('resTelefon').innerText = bulunan.telefon || '-';
+                    document.getElementById('resMarka').innerText = bulunan.marka || '-';
                     
-                    document.getElementById('resGirisTarihi').innerText = temizleTarih(bulunan.girisTarihi);
-                    document.getElementById('resKM').innerText = temizleTarih(bulunan.km);
-                    document.getElementById('resAriza').innerText = bulunan.ariza;
-                    document.getElementById('resMalzemeler').innerText = bulunan.malzemeler;
+                    document.getElementById('resGirisTarihi').innerText = temizleTarih(bulunan.girisTarihi) || '-';
+                    document.getElementById('resKM').innerText = temizleTarih(bulunan.km) || '-';
+                    document.getElementById('resAriza').innerText = bulunan.ariza || '-';
+                    document.getElementById('resMalzemeler').innerText = bulunan.malzemeler || '-';
+                    document.getElementById('resParcalar').innerText = temizleTarih(bulunan.parcalar) || '-';
                     
-                    document.getElementById('resParcalar').innerText = bulunan.parcalar;
-                    document.getElementById('resFiyatlar').innerText = bulunan.fiyatlar;
+                    document.getElementById('resTeslimTarihi').innerText = temizleTarih(bulunan.teslimTarihi) || '-';
+                    document.getElementById('resGelecekKM').innerText = temizleTarih(bulunan.gelecekKM) || '-';
                     
-                    document.getElementById('resTeslimTarihi').innerText = temizleTarih(bulunan.teslimTarihi);
-                    document.getElementById('resGelecekKM').innerText = temizleTarih(bulunan.gelecekKM);
-                    
-                    document.getElementById('resVeresiye').innerText = bulunan.veresiye;
-                    document.getElementById('resNakit').innerText = bulunan.nakit;
-                    document.getElementById('resKrediKarti').innerText = bulunan.krediKarti;
+                    document.getElementById('resVeresiye').innerText = bulunan.veresiye || '-';
+                    document.getElementById('resNakit').innerText = bulunan.nakit || '-';
+                    document.getElementById('resKrediKarti').innerText = bulunan.krediKarti || '-';
                     
                     resultCard.classList.remove('hidden');
                 } else {
