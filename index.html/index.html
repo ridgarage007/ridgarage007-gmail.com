@@ -137,7 +137,7 @@
                         <span id="resToplam" class="font-extrabold text-emerald-400 text-xl font-mono tracking-wide">0.00 ₺</span>
                     </div>
 
-                    <!-- YENİ: WhatsApp Bakım Hatırlatma Butonu -->
+                    <!-- WhatsApp Bakım Hatırlatma Butonu -->
                     <div class="sm:col-span-2 pt-2">
                         <button onclick="whatsappHatirlat()" class="w-full bg-[#25D366] hover:bg-[#20ba5a] text-white py-3.5 px-4 rounded-2xl font-bold transition shadow-lg shadow-green-600/20 flex items-center justify-center space-x-2 text-base">
                             <i class="fa-brands fa-whatsapp text-xl"></i>
@@ -171,7 +171,7 @@
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycby2LXFvhLBeCDXxzkxVWkFDTrO4UbBoCW7c6gBxbGsGMMvirOpvyjmvvg9HQ7h0DEKU/exec';
         let isSearching = false;
-        let aktifKayit = null; // Seçilen aracın verilerini hafızada tutmak için
+        let aktifKayit = null;
 
         function temizleTarih(tarihStr) {
             if (!tarihStr) return '-';
@@ -211,7 +211,7 @@
             }
         }
 
-        // WhatsApp Hatırlatıcı Mesaj Gönderme Fonksiyonu
+        // Otomatik Şanzıman Vurgulu WhatsApp Hatırlatıcı Mesajı
         function whatsappHatirlat() {
             if (!aktifKayit) {
                 alert('Önce bir araç sorgulamalısınız!');
@@ -224,7 +224,6 @@
                 return;
             }
 
-            // Eğer numara 0 ile başlıyorsa veya 10 haneliyse uluslararası formata çevir
             if (tel.length === 10) tel = '90' + tel;
             if (tel.startsWith('0')) tel = '9' + tel;
 
@@ -232,7 +231,7 @@
             let plaka = aktifKayit.plaka;
             let gelecekTarih = temizleTarih(aktifKayit.gelecekBakim);
 
-            let mesaj = `Sayın *${adSoyad}*,\n\n*RID GARAGE VAG Uzman Servis* olarak bizi tercih ettiğiniz için teşekkür ederiz. *${plaka}* plakalı aracınızın periyodik bakım dönemi yaklaşmıştır (${gelecekTarih}).\n\nBakım randevusu oluşturmak ve detaylı bilgi almak için bizimle iletişime geçebilirsiniz.\n\nİyi günler dileriz.\n📍 *RID GARAGE - Antalya*`;
+            let mesaj = `Sayın *${adSoyad}*,\n\n*RID GARAGE VAG Uzman Servis ve Otomatik Şanzıman Bakım Merkezi* olarak bizi tercih ettiğiniz için teşekkür ederiz. *${plaka}* plakalı aracınızın periyodik bakım ve kontrol dönemi yaklaşmıştır (${gelecekTarih}).\n\nŞanzıman ve motor bakım randevusu oluşturmak için bizimle iletişime geçebilirsiniz.\n\nİyi günler dileriz.\n📍 *RID GARAGE - Antalya*`;
 
             let url = `https://wa.me/${tel}?text=` + encodeURIComponent(mesaj);
             window.open(url, '_blank');
@@ -274,7 +273,7 @@
                     document.getElementById('resPlaka').innerText = aktifKayit.plaka;
                     document.getElementById('resAdSoyad').innerText = aktifKayit.adSoyad || '-';
                     document.getElementById('resTelefon').innerText = aktifKayit.telefon || '-';
-                    document.getElementById('resMarka').innerText = aktifKayit.marka || '-';
+                    document.getElementById('resMarka').innerText = aktifKeyit?.marka || aktifKayit.marka || '-';
                     document.getElementById('resGirisTarihi').innerText = aktifKayit.girisTarihi || '-';
                     document.getElementById('resKM').innerText = aktifKayit.km || '-';
                     document.getElementById('resTeslim').innerText = temizleTarih(aktifKayit.teslim);
